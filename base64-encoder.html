@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Base64 Encoder/Decoder - Brapiya Tools | Professional Base64 Tool</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a2a3a, #1e4a6a); min-height: 100vh; }
+        
+        .header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 1.8rem; }
+        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+        .nav-buttons { margin-top: 12px; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .card { background: white; border-radius: 32px; padding: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        .two-columns { display: flex; gap: 30px; flex-wrap: wrap; }
+        .input-column { flex: 1; min-width: 300px; }
+        .output-column { flex: 1; min-width: 300px; }
+        
+        .section-title { font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; justify-content: space-between; flex-wrap: wrap; }
+        .mode-badge { background: #c0392b; color: white; padding: 4px 12px; border-radius: 30px; font-size: 0.7rem; }
+        
+        textarea { width: 100%; padding: 18px; border: 2px solid #e9ecef; border-radius: 20px; font-size: 0.95rem; font-family: 'Monaco', 'Courier New', monospace; outline: none; resize: vertical; min-height: 250px; background: #f8f9fa; line-height: 1.5; }
+        textarea:focus { border-color: #c0392b; background: white; }
+        
+        .stats-bar { display: flex; gap: 15px; margin-top: 10px; font-size: 0.7rem; color: #666; flex-wrap: wrap; }
+        .stats-bar span { background: #f8f9fa; padding: 4px 12px; border-radius: 30px; }
+        
+        .swap-container { display: flex; justify-content: center; margin: 20px 0; }
+        .swap-btn { background: #c0392b; color: white; border: none; width: 60px; height: 60px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; transition: 0.2s; display: flex; align-items: center; justify-content: center; }
+        .swap-btn:hover { transform: scale(1.05); background: #a93226; }
+        
+        .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { padding: 12px 20px; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: 0.2s; }
+        .btn-primary { background: #c0392b; color: white; }
+        .btn-success { background: #27ae60; color: white; }
+        .btn-info { background: #3498db; color: white; }
+        .btn-secondary { background: #7f8c8d; color: white; }
+        .btn:hover { transform: scale(1.02); }
+        
+        .error-box { background: #fadbd8; border: 1px solid #e74c3c; border-radius: 16px; padding: 12px; margin-top: 15px; display: none; color: #c0392b; font-size: 0.8rem; }
+        
+        .note { background: #fff3cd; padding: 12px; border-radius: 16px; font-size: 0.7rem; color: #856404; text-align: center; margin-top: 20px; }
+        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 15px; margin-top: 30px; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 1000; }
+        
+        @media (max-width: 800px) {
+            .card { padding: 25px; }
+            .two-columns { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-code"></i> Brapiya Base64 Encoder/Decoder</h1>
+        <p>Convert Text to Base64 | Decode Base64 to Text | Free & Fast</p>
+        <div class="badge">🔥 ENCODE • DECODE • REAL-TIME • COPY • DOWNLOAD • FREE 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="json-formatter.html" class="nav-btn">JSON Formatter</a>
+            <a href="word-counter.html" class="nav-btn">Word Counter</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="two-columns">
+                <!-- LEFT - INPUT -->
+                <div class="input-column">
+                    <div class="section-title">
+                        <span><i class="fas fa-edit"></i> Input</span>
+                        <span class="mode-badge" id="inputMode">Text Mode</span>
+                    </div>
+                    <textarea id="inputText" placeholder="Enter text to encode to Base64...&#10;&#10;Example: Hello World!&#10;&#10;Or paste Base64 to decode..."></textarea>
+                    <div class="stats-bar">
+                        <span><i class="fas fa-database"></i> Size: <span id="inputSize">0</span> bytes</span>
+                        <span><i class="fas fa-font"></i> Characters: <span id="inputChars">0</span></span>
+                        <span><i class="fas fa-code-branch"></i> Lines: <span id="inputLines">0</span></span>
+                    </div>
+                </div>
+                
+                <!-- RIGHT - OUTPUT -->
+                <div class="output-column">
+                    <div class="section-title">
+                        <span><i class="fas fa-eye"></i> Output</span>
+                        <span class="mode-badge" id="outputMode">Base64 Mode</span>
+                    </div>
+                    <textarea id="outputText" readonly placeholder="Result will appear here..." style="background: #f8f9fa; cursor: default;"></textarea>
+                    <div class="stats-bar">
+                        <span><i class="fas fa-database"></i> Size: <span id="outputSize">0</span> bytes</span>
+                        <span><i class="fas fa-font"></i> Characters: <span id="outputChars">0</span></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="swap-container">
+                <button class="swap-btn" onclick="swapMode()"><i class="fas fa-exchange-alt"></i></button>
+            </div>
+            
+            <div class="error-box" id="errorBox">
+                <i class="fas fa-exclamation-triangle"></i> <span id="errorMsg"></span>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-primary" onclick="convert()"><i class="fas fa-sync-alt"></i> Convert</button>
+                <button class="btn btn-success" onclick="copyOutput()"><i class="fas fa-copy"></i> Copy Result</button>
+                <button class="btn btn-info" onclick="downloadOutput()"><i class="fas fa-download"></i> Download</button>
+                <button class="btn btn-secondary" onclick="clearAll()"><i class="fas fa-trash"></i> Clear All</button>
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-info-circle"></i> <strong>What is Base64?</strong> Base64 encoding converts binary data to ASCII text format. It's commonly used for embedding images in HTML/CSS, sending data in JSON APIs, and email attachments.
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">✅ Copied!</div>
+    
+    <footer>
+        <p>© 2026 Brapiya Tools | Professional Base64 Encoder/Decoder | Free & Fast</p>
+        <p>🇮🇳 Jai Hind | Encode and decode Base64 instantly 🇮🇳</p>
+    </footer>
+    
+    <script>
+        let currentMode = 'encode'; // 'encode' or 'decode'
+        
+        const inputText = document.getElementById('inputText');
+        const outputText = document.getElementById('outputText');
+        const inputModeSpan = document.getElementById('inputMode');
+        const outputModeSpan = document.getElementById('outputMode');
+        const errorBox = document.getElementById('errorBox');
+        const errorMsg = document.getElementById('errorMsg');
+        
+        let currentOutput = '';
+        
+        function updateInputStats() {
+            const text = inputText.value;
+            const bytes = new Blob([text]).size;
+            const chars = text.length;
+            const lines = text === '' ? 0 : text.split(/\n/).length;
+            document.getElementById('inputSize').innerText = bytes;
+            document.getElementById('inputChars').innerText = chars;
+            document.getElementById('inputLines').innerText = lines;
+        }
+        
+        function updateOutputStats() {
+            const text = outputText.value;
+            const bytes = new Blob([text]).size;
+            const chars = text.length;
+            document.getElementById('outputSize').innerText = bytes;
+            document.getElementById('outputChars').innerText = chars;
+        }
+        
+        function swapMode() {
+            if (currentMode === 'encode') {
+                currentMode = 'decode';
+                inputModeSpan.innerText = 'Base64 Mode';
+                outputModeSpan.innerText = 'Text Mode';
+                inputText.placeholder = 'Enter Base64 string to decode...\n\nExample: SGVsbG8gV29ybGQh';
+                convert();
+            } else {
+                currentMode = 'encode';
+                inputModeSpan.innerText = 'Text Mode';
+                outputModeSpan.innerText = 'Base64 Mode';
+                inputText.placeholder = 'Enter text to encode to Base64...\n\nExample: Hello World!';
+                convert();
+            }
+            showToast(`Switched to ${currentMode === 'encode' ? 'Encode' : 'Decode'} mode`);
+        }
+        
+        function convert() {
+            const text = inputText.value.trim();
+            if (!text) {
+                outputText.value = '';
+                currentOutput = '';
+                errorBox.style.display = 'none';
+                updateOutputStats();
+                return;
+            }
+            
+            errorBox.style.display = 'none';
+            
+            try {
+                if (currentMode === 'encode') {
+                    // Encode text to Base64
+                    currentOutput = btoa(unescape(encodeURIComponent(text)));
+                    outputText.value = currentOutput;
+                } else {
+                    // Decode Base64 to text
+                    const decoded = atob(text);
+                    currentOutput = decodeURIComponent(escape(decoded));
+                    outputText.value = currentOutput;
+                }
+                updateOutputStats();
+            } catch(e) {
+                errorBox.style.display = 'block';
+                errorMsg.innerText = `Error: Invalid ${currentMode === 'encode' ? 'text' : 'Base64 string'}. ${e.message}`;
+                outputText.value = '';
+                currentOutput = '';
+                updateOutputStats();
+            }
+        }
+        
+        function copyOutput() {
+            if (!currentOutput) {
+                showToast('Nothing to copy');
+                return;
+            }
+            navigator.clipboard.writeText(currentOutput);
+            showToast('✅ Copied to clipboard!');
+        }
+        
+        function downloadOutput() {
+            if (!currentOutput) {
+                showToast('Nothing to download');
+                return;
+            }
+            const extension = currentMode === 'encode' ? '.txt' : '.txt';
+            const filename = currentMode === 'encode' ? 'base64_encoded.txt' : 'base64_decoded.txt';
+            const blob = new Blob([currentOutput], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ File downloaded!');
+        }
+        
+        function clearAll() {
+            inputText.value = '';
+            outputText.value = '';
+            currentOutput = '';
+            errorBox.style.display = 'none';
+            updateInputStats();
+            updateOutputStats();
+            showToast('Cleared!');
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+        
+        inputText.addEventListener('input', () => {
+            updateInputStats();
+            convert();
+        });
+        
+        // Demo text
+        inputText.value = 'Hello World! Welcome to Brapiya Tools. This is a Base64 Encoder/Decoder.';
+        updateInputStats();
+        convert();
+    </script>
+</body>
+</html>

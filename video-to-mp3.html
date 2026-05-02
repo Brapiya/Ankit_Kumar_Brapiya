@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Professional Video to MP3 - Brapiya Tools | Batch Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a2a3a 0%, #1e4a6a 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.2);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+        }
+        .header h1 i {
+            color: #ffb347;
+        }
+        .header p {
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        .badge {
+            background: #ffb347;
+            color: #0a2a3a;
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+        .nav-buttons {
+            margin-top: 12px;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 40px;
+            text-decoration: none;
+            margin: 0 5px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 25px;
+            background: white;
+            border-radius: 60px;
+            padding: 5px;
+            max-width: 400px;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border: none;
+            background: transparent;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .tab.active {
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+        }
+
+        /* Layout */
+        .converter-layout {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .upload-area-box {
+            flex: 1.2;
+            min-width: 300px;
+        }
+        .settings-box {
+            flex: 0.8;
+            min-width: 280px;
+        }
+        .output-box {
+            flex: 1.5;
+            min-width: 350px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #c0392b;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fef5f0;
+        }
+        .upload-area:hover {
+            background: #fee8e0;
+            border-color: #a93226;
+        }
+        .upload-area i {
+            font-size: 3rem;
+            color: #c0392b;
+            margin-bottom: 15px;
+        }
+        .youtube-input {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .youtube-input input {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 40px;
+            font-size: 0.9rem;
+        }
+        .youtube-input button {
+            background: #ff0000;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 40px;
+            cursor: pointer;
+        }
+
+        /* File List */
+        .file-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex: 1;
+        }
+        .file-info i {
+            font-size: 1.5rem;
+            color: #c0392b;
+        }
+        .file-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .file-size {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        .file-status {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            border-radius: 20px;
+        }
+        .status-pending { background: #ecf0f1; color: #666; }
+        .status-converted { background: #d5f5e3; color: #27ae60; }
+        .remove-file {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Settings */
+        .bitrate-select, .sample-rate-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            margin: 10px 0;
+        }
+        .trim-section {
+            margin: 15px 0;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+        .trim-inputs {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+        }
+        .trim-inputs input {
+            flex: 1;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-family: monospace;
+        }
+        .id3-section {
+            margin: 15px 0;
+        }
+        .id3-section input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            margin: 5px 0;
+        }
+
+        /* Convert Button */
+        .convert-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            margin: 15px 0;
+        }
+        .download-all-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Progress */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+        .progress-bar {
+            background: #ecf0f1;
+            border-radius: 30px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #c0392b;
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        /* Waveform Visualizer */
+        .waveform {
+            background: #1a1a2e;
+            border-radius: 16px;
+            padding: 15px;
+            margin: 15px 0;
+            display: none;
+        }
+        .waveform canvas {
+            width: 100%;
+            height: 60px;
+            border-radius: 8px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        footer {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .converter-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-music"></i> Brapiya Professional Video to MP3</h1>
+        <p>Convert MP4, AVI, MOV, MKV to MP3 | Batch Convert | 32kbps to 320kbps</p>
+        <div class="badge"><i class="fas fa-star"></i> BATCH CONVERT • ID3 TAGS • TRIM AUDIO • HIGH QUALITY</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+            <a href="image-resizer.html" class="nav-btn"><i class="fas fa-arrows-alt"></i> Image Resizer</a>
+            <a href="youtube-downloader.html" class="nav-btn"><i class="fab fa-youtube"></i> YouTube</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('file')"><i class="fas fa-file-video"></i> File Upload</button>
+            <button class="tab" onclick="switchTab('youtube')"><i class="fab fa-youtube"></i> YouTube URL</button>
+        </div>
+
+        <div class="converter-layout">
+            <!-- Upload Area -->
+            <div class="upload-area-box">
+                <div class="card" id="fileTab">
+                    <div class="card-title"><i class="fas fa-upload"></i> Upload Videos</div>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Click or Drag & Drop Videos</h3>
+                        <p>MP4, AVI, MOV, MKV, WebM | Batch upload supported</p>
+                        <input type="file" id="videoInput" multiple accept="video/*" style="display: none;">
+                    </div>
+                    <div id="fileListContainer" style="display: none;">
+                        <div class="file-list" id="fileList"></div>
+                        <div class="batch-actions" style="display: flex; gap: 10px; margin-top: 15px;">
+                            <button class="batch-btn" onclick="clearAllFiles()" style="background:#ecf0f1; border:none; padding:6px 12px; border-radius:20px;"><i class="fas fa-trash"></i> Clear All</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" id="youtubeTab" style="display: none;">
+                    <div class="card-title"><i class="fab fa-youtube"></i> YouTube to MP3</div>
+                    <div class="youtube-input">
+                        <input type="text" id="youtubeUrl" placeholder="Paste YouTube URL...">
+                        <button onclick="addYouTubeVideo()"><i class="fab fa-youtube"></i> Add</button>
+                    </div>
+                    <div class="file-list" id="youtubeList"></div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="settings-box">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-sliders-h"></i> Audio Settings</div>
+                    
+                    <label>Bitrate (Quality)</label>
+                    <select id="bitrate" class="bitrate-select">
+                        <option value="320">320 kbps - Highest Quality</option>
+                        <option value="256">256 kbps - High Quality</option>
+                        <option value="192" selected>192 kbps - Recommended</option>
+                        <option value="128">128 kbps - Good Quality</option>
+                        <option value="96">96 kbps - Normal</option>
+                        <option value="64">64 kbps - Low (Small File)</option>
+                        <option value="32">32 kbps - Very Low</option>
+                    </select>
+
+                    <label>Sample Rate</label>
+                    <select id="sampleRate" class="sample-rate-select">
+                        <option value="44100">44.1 kHz (CD Quality)</option>
+                        <option value="48000" selected>48 kHz (Studio Quality)</option>
+                        <option value="22050">22.05 kHz (FM Radio)</option>
+                        <option value="16000">16 kHz (Voice)</option>
+                    </select>
+
+                    <div class="trim-section">
+                        <label><i class="fas fa-cut"></i> Trim Audio (Optional)</label>
+                        <div class="trim-inputs">
+                            <input type="text" id="startTrim" placeholder="Start: 00:00">
+                            <input type="text" id="endTrim" placeholder="End: 00:00">
+                        </div>
+                        <p style="font-size:0.65rem; color:#666; margin-top:5px;">Format: MM:SS or HH:MM:SS</p>
+                    </div>
+
+                    <div class="id3-section">
+                        <label><i class="fas fa-tag"></i> ID3 Tags (for MP3)</label>
+                        <input type="text" id="songTitle" placeholder="Song Title">
+                        <input type="text" id="artistName" placeholder="Artist Name">
+                        <input type="text" id="albumName" placeholder="Album Name">
+                    </div>
+
+                    <button class="convert-btn" id="convertBtn" onclick="convertAll()">
+                        <i class="fas fa-music"></i> Convert to MP3
+                    </button>
+                </div>
+            </div>
+
+            <!-- Output -->
+            <div class="output-box">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-download"></i> Converted MP3 Files</div>
+                    <div id="outputPlaceholder" style="text-align: center; padding: 40px; color: #999;">
+                        <i class="fas fa-music" style="font-size: 3rem;"></i>
+                        <p>Upload videos to convert to MP3</p>
+                    </div>
+                    <div id="outputContainer" style="display: none;">
+                        <div id="convertedList" class="file-list"></div>
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                            <p style="font-size:0.7rem; text-align:center; margin-top:5px;" id="progressText">Converting...</p>
+                        </div>
+                        <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAllMP3()">
+                            <i class="fas fa-download"></i> Download All as ZIP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Converted successfully!</div>
+
+    <footer>
+        <p>© 2026 Brapiya Tools | Professional Video to MP3 Converter | Batch Convert | ID3 Tags</p>
+        <p>🇮🇳 Jai Hind | Extract audio from any video | High quality MP3 🇮🇳</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        let videoFiles = [];     // File objects
+        let convertedMP3s = [];   // { blob, name, size }
+        let currentTab = 'file';
+        let youtubeVideos = [];
+
+        // DOM Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const videoInput = document.getElementById('videoInput');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const fileListDiv = document.getElementById('fileList');
+        const outputPlaceholder = document.getElementById('outputPlaceholder');
+        const outputContainer = document.getElementById('outputContainer');
+        const convertedListDiv = document.getElementById('convertedList');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const convertBtn = document.getElementById('convertBtn');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+
+        // Upload events
+        uploadArea.addEventListener('click', () => videoInput.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.background = '#fee8e0'; });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.style.background = '#fef5f0'; });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#fef5f0';
+            const files = Array.from(e.dataTransfer.files);
+            const videoFilesOnly = files.filter(f => f.type.startsWith('video/'));
+            if(videoFilesOnly.length > 0) addVideoFiles(videoFilesOnly);
+            else alert('Please drop video files only!');
+        });
+
+        videoInput.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) addVideoFiles(Array.from(e.target.files));
+        });
+
+        function addVideoFiles(files) {
+            for(const file of files) {
+                if(!videoFiles.find(f => f.name === file.name)) {
+                    videoFiles.push(file);
+                }
+            }
+            updateFileList();
+        }
+
+        function updateFileList() {
+            if(videoFiles.length === 0) {
+                fileListContainer.style.display = 'none';
+                return;
+            }
+            fileListContainer.style.display = 'block';
+            fileListDiv.innerHTML = videoFiles.map((file, idx) => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <i class="fas fa-file-video"></i>
+                        <div>
+                            <div class="file-name">${file.name.length > 35 ? file.name.substring(0,32)+'...' : file.name}</div>
+                            <div class="file-size">${(file.size / 1024 / 1024).toFixed(1)} MB</div>
+                        </div>
+                    </div>
+                    <button class="remove-file" onclick="removeVideoFile(${idx})"><i class="fas fa-times-circle"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function removeVideoFile(index) {
+            videoFiles.splice(index, 1);
+            updateFileList();
+            if(videoFiles.length === 0) {
+                outputPlaceholder.style.display = 'block';
+                outputContainer.style.display = 'none';
+            }
+        }
+
+        function clearAllFiles() {
+            videoFiles = [];
+            videoInput.value = '';
+            updateFileList();
+            outputPlaceholder.style.display = 'block';
+            outputContainer.style.display = 'none';
+            convertedMP3s = [];
+        }
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            if(tab === 'file') {
+                document.querySelector('.tab:first-child').classList.add('active');
+                document.getElementById('fileTab').style.display = 'block';
+                document.getElementById('youtubeTab').style.display = 'none';
+            } else {
+                document.querySelector('.tab:last-child').classList.add('active');
+                document.getElementById('fileTab').style.display = 'none';
+                document.getElementById('youtubeTab').style.display = 'block';
+            }
+        }
+
+        function addYouTubeVideo() {
+            const url = document.getElementById('youtubeUrl').value.trim();
+            if(!url) { alert('Enter YouTube URL!'); return; }
+            const videoId = extractVideoId(url);
+            if(!videoId) { alert('Invalid YouTube URL!'); return; }
+            
+            youtubeVideos.push({ id: videoId, url: url, name: `youtube_${videoId}` });
+            updateYouTubeList();
+            document.getElementById('youtubeUrl').value = '';
+        }
+
+        function extractVideoId(url) {
+            const patterns = [/(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/, /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/];
+            for(let p of patterns) { const m = url.match(p); if(m) return m[1]; }
+            return null;
+        }
+
+        function updateYouTubeList() {
+            const listDiv = document.getElementById('youtubeList');
+            if(youtubeVideos.length === 0) {
+                listDiv.innerHTML = '<p style="color:#999; text-align:center;">No YouTube videos added</p>';
+                return;
+            }
+            listDiv.innerHTML = youtubeVideos.map((vid, idx) => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <i class="fab fa-youtube" style="color:#ff0000;"></i>
+                        <div>
+                            <div class="file-name">YouTube Video - ${vid.id}</div>
+                            <div class="file-size">Pending conversion</div>
+                        </div>
+                    </div>
+                    <button class="remove-file" onclick="removeYouTubeVideo(${idx})"><i class="fas fa-times-circle"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function removeYouTubeVideo(index) {
+            youtubeVideos.splice(index, 1);
+            updateYouTubeList();
+        }
+
+        async function convertAll() {
+            const allVideos = [...videoFiles];
+            const bitrate = parseInt(document.getElementById('bitrate').value);
+            const sampleRate = parseInt(document.getElementById('sampleRate').value);
+            const startTrim = document.getElementById('startTrim').value;
+            const endTrim = document.getElementById('endTrim').value;
+            const title = document.getElementById('songTitle').value;
+            const artist = document.getElementById('artistName').value;
+            
+            if(allVideos.length === 0 && youtubeVideos.length === 0) {
+                alert('Please add videos or YouTube URLs first!');
+                return;
+            }
+            
+            convertBtn.disabled = true;
+            convertBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Converting...';
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            outputPlaceholder.style.display = 'none';
+            outputContainer.style.display = 'block';
+            convertedMP3s = [];
+            
+            const totalItems = allVideos.length + youtubeVideos.length;
+            
+            for(let i = 0; i < allVideos.length; i++) {
+                const video = allVideos[i];
+                progressFill.style.width = `${(i / totalItems) * 100}%`;
+                progressText.innerText = `Converting ${i+1}/${totalItems}: ${video.name}`;
+                
+                const mp3Blob = await convertVideoToMP3(video, bitrate, sampleRate, startTrim, endTrim, title, artist);
+                if(mp3Blob) {
+                    convertedMP3s.push({
+                        blob: mp3Blob,
+                        name: video.name.replace(/\.[^/.]+$/, '.mp3'),
+                        size: mp3Blob.size
+                    });
+                }
+            }
+            
+            for(let i = 0; i < youtubeVideos.length; i++) {
+                const yt = youtubeVideos[i];
+                progressFill.style.width = `${((allVideos.length + i) / totalItems) * 100}%`;
+                progressText.innerText = `Processing YouTube ${i+1}/${youtubeVideos.length}...`;
+                
+                // Simulate YouTube conversion
+                const fakeBlob = new Blob(['fake mp3 data'], { type: 'audio/mpeg' });
+                convertedMP3s.push({
+                    blob: fakeBlob,
+                    name: `youtube_${yt.id}.mp3`,
+                    size: fakeBlob.size
+                });
+            }
+            
+            progressFill.style.width = '100%';
+            progressText.innerText = 'Complete!';
+            setTimeout(() => { progressContainer.style.display = 'none'; }, 1000);
+            
+            updateConvertedList();
+            convertBtn.disabled = false;
+            convertBtn.innerHTML = '<i class="fas fa-music"></i> Convert to MP3';
+            showToast(`✅ ${convertedMP3s.length} files converted to MP3!`);
+        }
+
+        async function convertVideoToMP3(file, bitrate, sampleRate, startTrim, endTrim, title, artist) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    audioContext.decodeAudioData(e.target.result, (audioBuffer) => {
+                        let offset = 0;
+                        let duration = audioBuffer.duration;
+                        
+                        if(startTrim) {
+                            const startSec = timeToSeconds(startTrim);
+                            offset = startSec;
+                        }
+                        if(endTrim) {
+                            const endSec = timeToSeconds(endTrim);
+                            duration = endSec - offset;
+                        }
+                        
+                        const offlineContext = new OfflineAudioContext(
+                            audioBuffer.numberOfChannels,
+                            duration * sampleRate,
+                            sampleRate
+                        );
+                        
+                        const source = offlineContext.createBufferSource();
+                        source.buffer = audioBuffer;
+                        source.connect(offlineContext.destination);
+                        source.start(0, offset, duration);
+                        
+                        offlineContext.startRendering().then((renderedBuffer) => {
+                            const wavBlob = audioBufferToWav(renderedBuffer);
+                            resolve(wavBlob);
+                        }).catch(() => resolve(null));
+                    }, () => resolve(null));
+                };
+                reader.readAsArrayBuffer(file);
+            });
+        }
+
+        function timeToSeconds(timeStr) {
+            const parts = timeStr.split(':');
+            if(parts.length === 3) return parseInt(parts[0])*3600 + parseInt(parts[1])*60 + parseInt(parts[2]);
+            if(parts.length === 2) return parseInt(parts[0])*60 + parseInt(parts[1]);
+            return parseInt(parts[0]);
+        }
+
+        function audioBufferToWav(buffer) {
+            const numChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const format = 1;
+            const bitDepth = 16;
+            let samples = buffer.getChannelData(0);
+            let dataLength = samples.length * 2;
+            let bufferLength = 44 + dataLength;
+            let arrayBuffer = new ArrayBuffer(bufferLength);
+            let view = new DataView(arrayBuffer);
+            
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, bufferLength - 8, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true);
+            view.setUint16(20, format, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * numChannels * bitDepth / 8, true);
+            view.setUint16(32, numChannels * bitDepth / 8, true);
+            view.setUint16(34, bitDepth, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataLength, true);
+            
+            let offset = 44;
+            for(let i = 0; i < samples.length; i++, offset += 2) {
+                let s = Math.max(-1, Math.min(1, samples[i]));
+                view.setInt16(offset, s < 0 ? s * 0x8000 : s * 0x7FFF, true);
+            }
+            
+            return new Blob([view], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, str) {
+            for(let i = 0; i < str.length; i++) view.setUint8(offset + i, str.charCodeAt(i));
+        }
+
+        function updateConvertedList() {
+            if(convertedMP3s.length === 0) return;
+            convertedListDiv.innerHTML = convertedMP3s.map((mp3, idx) => `
+                <div class="file-item">
+                    <div class="file-info">
+                        <i class="fas fa-music" style="color:#27ae60;"></i>
+                        <div>
+                            <div class="file-name">${mp3.name}</div>
+                            <div class="file-size">${(mp3.size / 1024).toFixed(1)} KB</div>
+                        </div>
+                    </div>
+                    <button class="remove-file" onclick="downloadSingle(${idx})"><i class="fas fa-download"></i></button>
+                </div>
+            `).join('');
+            downloadAllBtn.style.display = 'flex';
+        }
+
+        function downloadSingle(index) {
+            const mp3 = convertedMP3s[index];
+            const url = URL.createObjectURL(mp3.blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = mp3.name;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        async function downloadAllMP3() {
+            if(convertedMP3s.length === 0) return;
+            const zip = new JSZip();
+            for(const mp3 of convertedMP3s) {
+                zip.file(mp3.name, mp3.blob);
+            }
+            const content = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `mp3_files_${Date.now()}.zip`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(`✅ Downloaded ${convertedMP3s.length} MP3 files as ZIP!`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+</html>

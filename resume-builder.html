@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Professional Resume Builder - Brapiya Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a2a3a, #1e4a6a); min-height: 100vh; padding-bottom: 40px; }
+        
+        /* Header */
+        .header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 1.8rem; }
+        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+        .nav-buttons { margin-top: 12px; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
+        
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+        .two-columns { display: flex; gap: 25px; flex-wrap: wrap; }
+        
+        /* Form Panel */
+        .form-panel { flex: 1; min-width: 350px; background: white; border-radius: 28px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); max-height: 85vh; overflow-y: auto; }
+        .preview-panel { flex: 1; min-width: 450px; background: white; border-radius: 28px; padding: 25px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        .form-section { margin-bottom: 20px; border-bottom: 1px solid #e9ecef; padding-bottom: 15px; }
+        .form-title { font-weight: 700; font-size: 0.9rem; margin-bottom: 12px; color: #c0392b; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+        .form-group { margin-bottom: 10px; }
+        .form-group label { display: block; font-size: 0.7rem; font-weight: 600; margin-bottom: 4px; color: #555; }
+        .form-group input, .form-group textarea { width: 100%; padding: 8px 12px; border: 2px solid #e9ecef; border-radius: 12px; font-size: 0.8rem; outline: none; font-family: inherit; }
+        .title-input { width: auto; min-width: 150px; display: inline-block; padding: 4px 8px; font-size: 0.8rem; font-weight: 600; border: 1px solid #e9ecef; border-radius: 8px; margin-left: 8px; }
+        
+        .template-selector { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .template-btn { flex: 1; background: #ecf0f1; border: none; padding: 10px; border-radius: 12px; cursor: pointer; font-weight: 600; }
+        .template-btn.active { background: #c0392b; color: white; }
+        
+        /* Resume Styles for Screen & Print */
+        .resume-preview { background: white; border-radius: 16px; padding: 25px; min-height: 500px; border: 1px solid #e9ecef; overflow-y: auto; max-height: 70vh; }
+        .resume-content { font-family: 'Inter', sans-serif; max-width: 800px; margin: 0 auto; background: white; }
+        .resume-header { text-align: center; border-bottom: 3px solid #c0392b; padding-bottom: 15px; margin-bottom: 20px; }
+        .resume-name { font-size: 28px; font-weight: 800; color: #2c3e50; }
+        .resume-title { font-size: 16px; color: #c0392b; margin: 8px 0; }
+        .resume-contact { font-size: 11px; color: #666; margin-top: 10px; }
+        .resume-section { margin-bottom: 25px; break-inside: avoid; page-break-inside: avoid; }
+        .resume-section-title { font-size: 16px; color: #c0392b; border-left: 3px solid #c0392b; padding-left: 12px; margin-bottom: 12px; font-weight: 700; }
+        .resume-text { font-size: 13px; line-height: 1.5; margin-left: 15px; color: #444; white-space: pre-wrap; }
+        
+        /* PRINT STYLES – यही सबसे जरूरी है */
+        @media print {
+            body { background: white; padding: 0; margin: 0; }
+            .header, .nav-buttons, .form-panel, .template-selector, .action-buttons, .toast, footer { display: none !important; }
+            .container { padding: 0; margin: 0; }
+            .two-columns { display: block; }
+            .preview-panel { width: 100%; max-width: 100%; margin: 0; padding: 0; box-shadow: none; }
+            .resume-preview { border: none; padding: 0; margin: 0; max-height: none; overflow: visible; }
+            .resume-content { margin: 0 auto; box-shadow: none; }
+            .resume-section { break-inside: avoid; page-break-inside: avoid; }
+        }
+        
+        .action-buttons { display: flex; gap: 12px; margin-top: 20px; flex-wrap: wrap; }
+        .btn { flex: 1; padding: 12px; border-radius: 50px; font-weight: 700; cursor: pointer; border: none; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; }
+        .btn-print { background: #27ae60; color: white; }
+        .btn-copy { background: #3498db; color: white; }
+        .btn-reset { background: #7f8c8d; color: white; }
+        
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 1000; }
+        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 15px; margin-top: 20px; font-size: 0.75rem; }
+        
+        @media (max-width: 900px) { .two-columns { flex-direction: column; } }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-file-pdf"></i> Brapiya Resume Builder (Print से PDF)</h1>
+        <p>सारे Sections – Professional Summary, Education, Experience, Skills, Projects, Custom</p>
+        <div class="badge">🔥 100% WORKING – Ctrl+P दबाओ, PDF में सब कुछ आएगा 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="image-compressor.html" class="nav-btn">Compressor</a>
+            <a href="instagram-saver.html" class="nav-btn">Story Saver</a>
+            <a href="pdf-compressor.html" class="nav-btn">Text to Speech</a>
+            <a href="pdf-page-remover.html" class="nav-btn">Color Picker</a>
+        
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="two-columns">
+            <!-- FORM PANEL -->
+            <div class="form-panel">
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-user"></i> Personal Details</div>
+                    <div class="form-group"><label>Full Name</label><input type="text" id="name" placeholder="Ankit Kumar Brapiya" oninput="updatePreview()"></div>
+                    <div class="form-group"><label>Professional Title</label><input type="text" id="title" placeholder="Full Stack Developer" oninput="updatePreview()"></div>
+                    <div class="form-group"><label>Email</label><input type="email" id="email" placeholder="army963199@gmail.com" oninput="updatePreview()"></div>
+                    <div class="form-group"><label>Phone</label><input type="text" id="phone" placeholder="+91 XXXXX XXXXX" oninput="updatePreview()"></div>
+                    <div class="form-group"><label>Address</label><input type="text" id="address" placeholder="Bhabua, Bihar" oninput="updatePreview()"></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-align-left"></i> Title: <input type="text" id="summaryTitle" value="Professional Summary" class="title-input" oninput="updatePreview()"></div>
+                    <div class="form-group"><textarea id="summary" rows="3" placeholder="Write your professional summary..." oninput="updatePreview()"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-graduation-cap"></i> Title: <input type="text" id="educationTitle" value="Education" class="title-input" oninput="updatePreview()"></div>
+                    <div class="form-group"><textarea id="education" rows="3" placeholder="Your education details..." oninput="updatePreview()"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-briefcase"></i> Title: <input type="text" id="experienceTitle" value="Work Experience" class="title-input" oninput="updatePreview()"></div>
+                    <div class="form-group"><textarea id="experience" rows="4" placeholder="Your work experience..." oninput="updatePreview()"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-code"></i> Title: <input type="text" id="skillsTitle" value="Technical Skills" class="title-input" oninput="updatePreview()"></div>
+                    <div class="form-group"><textarea id="skills" rows="3" placeholder="Your skills..." oninput="updatePreview()"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-project-diagram"></i> Title: <input type="text" id="projectsTitle" value="Projects" class="title-input" oninput="updatePreview()"></div>
+                    <div class="form-group"><textarea id="projects" rows="3" placeholder="Your projects..." oninput="updatePreview()"></textarea></div>
+                </div>
+
+                <div class="form-section">
+                    <div class="form-title"><i class="fas fa-plus-circle"></i> Custom Sections</div>
+                    <div id="customSectionsContainer"></div>
+                    <button class="add-custom-btn" onclick="addCustomSection()" style="background:#3498db; color:white; border:none; padding:8px 15px; border-radius:12px; cursor:pointer; margin-top:10px;"><i class="fas fa-plus"></i> Add Custom Section</button>
+                </div>
+            </div>
+
+            <!-- PREVIEW PANEL -->
+            <div class="preview-panel">
+                <div class="template-selector">
+                    <button class="template-btn active" onclick="selectTemplate(1)">📄 Classic</button>
+                    <button class="template-btn" onclick="selectTemplate(2)">✨ Modern</button>
+                    <button class="template-btn" onclick="selectTemplate(3)">👔 Executive</button>
+                </div>
+                <div class="resume-preview" id="resumePreview"></div>
+                <div class="action-buttons">
+                    <button class="btn btn-print" onclick="printResume()"><i class="fas fa-print"></i> Save as PDF (Ctrl+P)</button>
+                    <button class="btn btn-copy" onclick="copyText()"><i class="fas fa-copy"></i> Copy Text</button>
+                    <button class="btn btn-reset" onclick="resetForm()"><i class="fas fa-trash"></i> Reset</button>
+                </div>
+                <p style="font-size:0.7rem; text-align:center; margin-top:10px; color:#666;"></p>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Ready!</div>
+    <footer><p>© 2026 Brapiya Tools | Print से PDF – 100% working | सब sections अलग-अलग pages में भी print होंगे</p><p>🇮🇳 Jai Hind 🇮🇳</p></footer>
+
+    <script>
+        let currentTemplate = 1;
+        let customSections = [];
+
+        function formatText(text) {
+            if (!text) return '';
+            return text.replace(/\n/g, '<br>');
+        }
+
+        function addCustomSection() {
+            const id = Date.now();
+            customSections.push({ id: id, title: 'Certifications', content: '• AWS Certified\n• Google Certified' });
+            renderCustomSections();
+            updatePreview();
+        }
+
+        function removeCustomSection(id) {
+            customSections = customSections.filter(s => s.id !== id);
+            renderCustomSections();
+            updatePreview();
+        }
+
+        function updateCustomSectionTitle(id, title) {
+            const section = customSections.find(s => s.id === id);
+            if (section) { section.title = title; updatePreview(); }
+        }
+
+        function updateCustomSectionContent(id, content) {
+            const section = customSections.find(s => s.id === id);
+            if (section) { section.content = content; updatePreview(); }
+        }
+
+        function renderCustomSections() {
+            const container = document.getElementById('customSectionsContainer');
+            if (customSections.length === 0) {
+                container.innerHTML = '<p style="color:#999; font-size:0.7rem;">No custom sections. Click "Add Custom Section" to add Certifications, Languages, etc.</p>';
+                return;
+            }
+            container.innerHTML = customSections.map(s => `
+                <div class="custom-section-item" style="background:#f8f9fa; padding:15px; border-radius:16px; margin-bottom:15px;">
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <input type="text" value="${s.title.replace(/"/g, '&quot;')}" oninput="updateCustomSectionTitle(${s.id}, this.value)" style="flex:1; padding:5px; border-radius:8px; border:1px solid #ddd;">
+                        <button onclick="removeCustomSection(${s.id})" style="background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:8px;"><i class="fas fa-trash"></i></button>
+                    </div>
+                    <textarea rows="3" placeholder="Enter content..." oninput="updateCustomSectionContent(${s.id}, this.value)" style="width:100%; padding:8px; border-radius:8px; border:1px solid #ddd;">${s.content}</textarea>
+                </div>
+            `).join('');
+        }
+
+        function getResumeHTML() {
+            const name = document.getElementById('name').value || 'Your Name';
+            const title = document.getElementById('title').value || 'Your Title';
+            const email = document.getElementById('email').value || 'email@example.com';
+            const phone = document.getElementById('phone').value || '+91 XXXXX XXXXX';
+            const address = document.getElementById('address').value || 'Your Address';
+            const summaryTitle = document.getElementById('summaryTitle').value || 'Professional Summary';
+            const summary = document.getElementById('summary').value || '';
+            const educationTitle = document.getElementById('educationTitle').value || 'Education';
+            const education = document.getElementById('education').value || '';
+            const experienceTitle = document.getElementById('experienceTitle').value || 'Work Experience';
+            const experience = document.getElementById('experience').value || '';
+            const skillsTitle = document.getElementById('skillsTitle').value || 'Technical Skills';
+            const skills = document.getElementById('skills').value || '';
+            const projectsTitle = document.getElementById('projectsTitle').value || 'Projects';
+            const projects = document.getElementById('projects').value || '';
+
+            let bgColor = '#ffffff';
+            let borderStyle = '';
+            if (currentTemplate === 1) { bgColor = '#ffffff'; borderStyle = 'border:1px solid #e9ecef;'; }
+            else if (currentTemplate === 2) { bgColor = '#fef5f0'; borderStyle = 'border-left:4px solid #c0392b; border:1px solid #e9ecef;'; }
+            else { bgColor = '#f8f9fa'; borderStyle = 'border:2px solid #c0392b;'; }
+
+            let customHTML = '';
+            for (let s of customSections) {
+                if (s.content && s.content.trim()) {
+                    customHTML += `<div class="resume-section"><div class="resume-section-title">📌 ${s.title}</div><div class="resume-text">${formatText(s.content)}</div></div>`;
+                }
+            }
+
+            return `
+                <div class="resume-content" style="background:${bgColor}; padding:30px; border-radius:12px; ${borderStyle}">
+                    <div class="resume-header">
+                        <div class="resume-name">${name}</div>
+                        <div class="resume-title">${title}</div>
+                        <div class="resume-contact">📧 ${email} | 📞 ${phone} | 📍 ${address}</div>
+                    </div>
+                    <div class="resume-section"><div class="resume-section-title">📌 ${summaryTitle}</div><div class="resume-text">${formatText(summary)}</div></div>
+                    <div class="resume-section"><div class="resume-section-title">🎓 ${educationTitle}</div><div class="resume-text">${formatText(education)}</div></div>
+                    <div class="resume-section"><div class="resume-section-title">💼 ${experienceTitle}</div><div class="resume-text">${formatText(experience)}</div></div>
+                    <div class="resume-section"><div class="resume-section-title">💻 ${skillsTitle}</div><div class="resume-text">${formatText(skills)}</div></div>
+                    <div class="resume-section"><div class="resume-section-title">🚀 ${projectsTitle}</div><div class="resume-text">${formatText(projects)}</div></div>
+                    ${customHTML}
+                    <hr style="margin:20px 0 10px;">
+                    <p style="text-align:center; font-size:10px; color:#666;">Created with Brapiya Resume Builder</p>
+                </div>
+            `;
+        }
+
+        function updatePreview() {
+            document.getElementById('resumePreview').innerHTML = getResumeHTML();
+        }
+
+        function selectTemplate(template) {
+            currentTemplate = template;
+            document.querySelectorAll('.template-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updatePreview();
+            showToast(`✅ ${template === 1 ? 'Classic' : template === 2 ? 'Modern' : 'Executive'} selected`);
+        }
+
+        function printResume() {
+            // Temporary hide controls, print the resume content
+            const originalTitle = document.title;
+            document.title = document.getElementById('name').value + " - Resume";
+            window.print();
+            document.title = originalTitle;
+            showToast('✅ Print dialog opened. Choose "Save as PDF"');
+        }
+
+        function copyText() {
+            const name = document.getElementById('name').value || 'Your Name';
+            const title = document.getElementById('title').value || 'Title';
+            const email = document.getElementById('email').value || '';
+            const phone = document.getElementById('phone').value || '';
+            const address = document.getElementById('address').value || '';
+            const summary = document.getElementById('summary').value || '';
+            const education = document.getElementById('education').value || '';
+            const experience = document.getElementById('experience').value || '';
+            const skills = document.getElementById('skills').value || '';
+            const projects = document.getElementById('projects').value || '';
+            let text = `${name}\n${title}\n${email} | ${phone} | ${address}\n\nPROFESSIONAL SUMMARY:\n${summary}\n\nEDUCATION:\n${education}\n\nWORK EXPERIENCE:\n${experience}\n\nSKILLS:\n${skills}\n\nPROJECTS:\n${projects}`;
+            for(let s of customSections) if(s.content) text += `\n\n${s.title.toUpperCase()}:\n${s.content}`;
+            navigator.clipboard.writeText(text);
+            showToast('✅ Copied to clipboard');
+        }
+
+        function resetForm() {
+            document.getElementById('name').value = '';
+            document.getElementById('title').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('phone').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('summaryTitle').value = 'Professional Summary';
+            document.getElementById('summary').value = '';
+            document.getElementById('educationTitle').value = 'Education';
+            document.getElementById('education').value = '';
+            document.getElementById('experienceTitle').value = 'Work Experience';
+            document.getElementById('experience').value = '';
+            document.getElementById('skillsTitle').value = 'Technical Skills';
+            document.getElementById('skills').value = '';
+            document.getElementById('projectsTitle').value = 'Projects';
+            document.getElementById('projects').value = '';
+            customSections = [];
+            renderCustomSections();
+            updatePreview();
+            showToast('✅ Reset done');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+
+        // Demo content for testing
+        function setDemo() {
+            document.getElementById('name').value = 'Ankit Kumar Brapiya';
+            document.getElementById('title').value = 'Full Stack Developer';
+            document.getElementById('email').value = 'army963199@gmail.com';
+            document.getElementById('phone').value = '+91 98765 43210';
+            document.getElementById('address').value = 'Bhabua, Bihar';
+            document.getElementById('summary').value = 'Passionate Full Stack Developer with 5+ years of experience building web applications.';
+            document.getElementById('education').value = 'B.Tech in CS - AKTU (2024)\n12th - Bihar Board (2020)';
+            document.getElementById('experience').value = 'Software Developer at Tech Solutions (2022-Present)\n• Developed 10+ web apps\n• Led a team of 3';
+            document.getElementById('skills').value = 'JavaScript, React, Node.js, Python, MongoDB';
+            document.getElementById('projects').value = 'E-commerce Platform (MERN)\nPortfolio Website';
+            updatePreview();
+        }
+
+        window.onload = () => {
+            setDemo();
+            renderCustomSections();
+            updatePreview();
+        };
+    </script>
+</body>
+</html>

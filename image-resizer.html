@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Professional Image Resizer - Brapiya Tools | Batch Resize Images</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0a2a3a 0%, #1e4a6a 100%);
+            min-height: 100vh;
+        }
+
+        .header {
+            background: rgba(0,0,0,0.2);
+            color: white;
+            padding: 25px 20px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2rem;
+        }
+        .header h1 i {
+            color: #ffb347;
+        }
+        .header p {
+            opacity: 0.8;
+            margin-top: 5px;
+        }
+        .badge {
+            background: #ffb347;
+            color: #0a2a3a;
+            display: inline-block;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-top: 8px;
+        }
+        .nav-buttons {
+            margin-top: 12px;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 6px 15px;
+            border-radius: 40px;
+            text-decoration: none;
+            margin: 0 5px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Main Layout */
+        .resizer-layout {
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+        .upload-area-box {
+            flex: 1.2;
+            min-width: 300px;
+        }
+        .settings-box {
+            flex: 0.8;
+            min-width: 280px;
+        }
+        .preview-box {
+            flex: 1.5;
+            min-width: 350px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 20px;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 12px;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            border: 2px dashed #c0392b;
+            border-radius: 20px;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+            background: #fef5f0;
+        }
+        .upload-area:hover {
+            background: #fee8e0;
+            border-color: #a93226;
+        }
+        .upload-area i {
+            font-size: 3rem;
+            color: #c0392b;
+            margin-bottom: 15px;
+        }
+        .upload-area h3 {
+            margin-bottom: 8px;
+        }
+        .upload-area p {
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        /* File List */
+        .file-list {
+            margin-top: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .file-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            margin-bottom: 8px;
+            cursor: grab;
+        }
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .file-info img {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .file-name {
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        .file-size {
+            font-size: 0.7rem;
+            color: #666;
+        }
+        .remove-file {
+            background: none;
+            border: none;
+            color: #e74c3c;
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 5px;
+        }
+        .batch-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .batch-btn {
+            background: #ecf0f1;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        /* Settings */
+        .dimension-inputs {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+        .dimension-input {
+            flex: 1;
+        }
+        .dimension-input label {
+            display: block;
+            font-size: 0.7rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .dimension-input input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            font-size: 0.9rem;
+        }
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin: 15px 0;
+        }
+        .preset {
+            background: #ecf0f1;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .preset:hover, .preset.active {
+            background: #c0392b;
+            color: white;
+        }
+        .format-select {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+        .quality-slider {
+            margin: 15px 0;
+        }
+        .quality-slider input {
+            width: 100%;
+        }
+        .maintain-ratio {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+
+        /* Preview */
+        .preview-comparison {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+        .preview-card {
+            flex: 1;
+            text-align: center;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 16px;
+        }
+        .preview-card h4 {
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .preview-card img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 12px;
+            object-fit: contain;
+        }
+        .preview-size {
+            font-size: 0.7rem;
+            color: #666;
+            margin-top: 8px;
+        }
+        .resize-all-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .download-all-btn {
+            width: 100%;
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        /* Progress */
+        .progress-container {
+            margin-top: 20px;
+            display: none;
+        }
+        .progress-bar {
+            background: #ecf0f1;
+            border-radius: 30px;
+            height: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #c0392b;
+            width: 0%;
+            height: 100%;
+            transition: width 0.3s;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            display: none;
+            z-index: 1000;
+            animation: slideIn 0.3s ease;
+        }
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        footer {
+            background: rgba(0,0,0,0.3);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        @media (max-width: 1024px) {
+            .resizer-layout {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-arrows-alt"></i> Brapiya Professional Image Resizer</h1>
+        <p>Batch Resize Multiple Images | Preset Sizes | Format Convert | Quality Control</p>
+        <div class="badge"><i class="fas fa-star"></i>  FREE • NO WATERMARK • BATCH PROCESSING</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+            <a href="image-compressor.html" class="nav-btn"><i class="fas fa-compress-alt"></i> Compressor</a>
+            <a href="youtube-downloader.html" class="nav-btn"><i class="fab fa-youtube"></i> YouTube</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="resizer-layout">
+            <!-- Upload Area -->
+            <div class="upload-area-box">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-upload"></i> Upload Images</div>
+                    <div class="upload-area" id="uploadArea">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h3>Click or Drag & Drop Images</h3>
+                        <p>JPG, PNG, WebP, GIF | Batch upload supported</p>
+                        <input type="file" id="imageInput" multiple accept="image/*" style="display: none;">
+                    </div>
+                    <div id="fileListContainer" style="display: none;">
+                        <div class="file-list" id="fileList"></div>
+                        <div class="batch-actions">
+                            <button class="batch-btn" onclick="clearAllFiles()"><i class="fas fa-trash"></i> Clear All</button>
+                            <button class="batch-btn" onclick="selectAll()"><i class="fas fa-check-square"></i> Select All</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="settings-box">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-sliders-h"></i> Resize Settings</div>
+                    
+                    <div class="dimension-inputs">
+                        <div class="dimension-input">
+                            <label>Width (px)</label>
+                            <input type="number" id="widthInput" placeholder="Auto" value="800">
+                        </div>
+                        <div class="dimension-input">
+                            <label>Height (px)</label>
+                            <input type="number" id="heightInput" placeholder="Auto" value="600">
+                        </div>
+                    </div>
+                    
+                    <div class="maintain-ratio">
+                        <input type="checkbox" id="maintainRatio" checked>
+                        <label>Maintain Aspect Ratio</label>
+                    </div>
+
+                    <div class="preset-buttons">
+                        <span style="font-size:0.7rem; color:#666; width:100%;">📐 Quick Presets:</span>
+                        <button class="preset" onclick="setPreset(1920,1080)">1920x1080 (HD)</button>
+                        <button class="preset" onclick="setPreset(1280,720)">1280x720 (720p)</button>
+                        <button class="preset" onclick="setPreset(1080,1080)">1080x1080 (Insta)</button>
+                        <button class="preset" onclick="setPreset(1080,1350)">1080x1350 (Portrait)</button>
+                        <button class="preset" onclick="setPreset(800,600)">800x600</button>
+                        <button class="preset" onclick="setPreset(500,500)">500x500</button>
+                        <button class="preset" onclick="setPreset(300,300)">300x300</button>
+                    </div>
+
+                    <select id="formatSelect" class="format-select">
+                        <option value="original">Original Format</option>
+                        <option value="jpg">JPEG (.jpg)</option>
+                        <option value="png">PNG (.png)</option>
+                        <option value="webp">WebP (.webp) - Smaller Size</option>
+                    </select>
+
+                    <div class="quality-slider">
+                        <label>Quality: <span id="qualityValue">85</span>%</label>
+                        <input type="range" id="quality" min="10" max="100" value="85">
+                    </div>
+
+                    <button class="resize-all-btn" id="resizeBtn" onclick="resizeAllImages()">
+                        <i class="fas fa-magic"></i> Resize All Images
+                    </button>
+                </div>
+            </div>
+
+            <!-- Preview & Results -->
+            <div class="preview-box">
+                <div class="card">
+                    <div class="card-title"><i class="fas fa-eye"></i> Preview & Results</div>
+                    <div id="previewPlaceholder" style="text-align: center; padding: 40px; color: #999;">
+                        <i class="fas fa-image" style="font-size: 3rem;"></i>
+                        <p>Upload images to see preview</p>
+                    </div>
+                    <div id="previewContainer" style="display: none;">
+                        <div class="preview-comparison" id="comparisonContainer"></div>
+                        <div class="progress-container" id="progressContainer">
+                            <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+                            <p style="font-size:0.7rem; text-align:center; margin-top:5px;" id="progressText">Processing...</p>
+                        </div>
+                        <button class="download-all-btn" id="downloadAllBtn" onclick="downloadAll()" style="display: none;">
+                            <i class="fas fa-download"></i> Download All as ZIP
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Resized successfully!</div>
+
+    <footer>
+        <p>© 2026 Brapiya Tools | Professional Image Resizer | Batch Processing | Free & No Watermark</p>
+        <p>🇮🇳 Jai Hind | Resize multiple images at once | Save time & bandwidth 🇮🇳</p>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script>
+        let selectedFiles = [];
+        let resizedImages = [];
+        let currentPreviewIndex = 0;
+
+        // DOM Elements
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        const fileListContainer = document.getElementById('fileListContainer');
+        const fileListDiv = document.getElementById('fileList');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const previewContainer = document.getElementById('previewContainer');
+        const comparisonContainer = document.getElementById('comparisonContainer');
+        const resizeBtn = document.getElementById('resizeBtn');
+        const downloadAllBtn = document.getElementById('downloadAllBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        const widthInput = document.getElementById('widthInput');
+        const heightInput = document.getElementById('heightInput');
+        const maintainRatio = document.getElementById('maintainRatio');
+        const qualitySlider = document.getElementById('quality');
+        const qualityValue = document.getElementById('qualityValue');
+
+        qualitySlider.addEventListener('input', () => qualityValue.innerText = qualitySlider.value);
+
+        // Upload Area Events
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.background = '#fee8e0'; });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.style.background = '#fef5f0'; });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#fef5f0';
+            const files = Array.from(e.dataTransfer.files);
+            const imageFiles = files.filter(f => f.type.startsWith('image/'));
+            if(imageFiles.length > 0) addFiles(imageFiles);
+            else alert('Please drop image files only!');
+        });
+
+        imageInput.addEventListener('change', (e) => {
+            if(e.target.files.length > 0) addFiles(Array.from(e.target.files));
+        });
+
+        function addFiles(files) {
+            for(const file of files) {
+                if(!selectedFiles.find(f => f.name === file.name)) {
+                    selectedFiles.push(file);
+                }
+            }
+            updateFileList();
+            showFirstPreview();
+        }
+
+        function updateFileList() {
+            if(selectedFiles.length === 0) {
+                fileListContainer.style.display = 'none';
+                previewPlaceholder.style.display = 'block';
+                previewContainer.style.display = 'none';
+                return;
+            }
+            fileListContainer.style.display = 'block';
+            fileListDiv.innerHTML = selectedFiles.map((file, idx) => `
+                <div class="file-item" data-idx="${idx}">
+                    <div class="file-info">
+                        <img src="${URL.createObjectURL(file)}" alt="">
+                        <div>
+                            <div class="file-name">${file.name.length > 30 ? file.name.substring(0,27)+'...' : file.name}</div>
+                            <div class="file-size">${(file.size / 1024).toFixed(1)} KB</div>
+                        </div>
+                    </div>
+                    <button class="remove-file" onclick="removeFile(${idx})"><i class="fas fa-times-circle"></i></button>
+                </div>
+            `).join('');
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            updateFileList();
+            if(selectedFiles.length > 0) showFirstPreview();
+            else { previewPlaceholder.style.display = 'block'; previewContainer.style.display = 'none'; }
+        }
+
+        function clearAllFiles() {
+            selectedFiles = [];
+            imageInput.value = '';
+            updateFileList();
+            previewPlaceholder.style.display = 'block';
+            previewContainer.style.display = 'none';
+            resizedImages = [];
+            downloadAllBtn.style.display = 'none';
+        }
+
+        function selectAll() { /* for batch selection */ }
+
+        function showFirstPreview() {
+            if(selectedFiles.length === 0) return;
+            previewPlaceholder.style.display = 'none';
+            previewContainer.style.display = 'block';
+            const file = selectedFiles[0];
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                comparisonContainer.innerHTML = `
+                    <div class="preview-card">
+                        <h4>🖼️ Original</h4>
+                        <img src="${e.target.result}" alt="Original">
+                        <div class="preview-size">${(file.size / 1024).toFixed(1)} KB</div>
+                    </div>
+                    <div class="preview-card">
+                        <h4>✨ Resized Preview</h4>
+                        <img id="previewResized" alt="Preview">
+                        <div class="preview-size" id="previewSize">Click "Resize All"</div>
+                    </div>
+                `;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function setPreset(w, h) {
+            widthInput.value = w;
+            heightInput.value = h;
+            document.querySelectorAll('.preset').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        async function resizeAllImages() {
+            if(selectedFiles.length === 0) { alert('Please upload images first!'); return; }
+            
+            resizeBtn.disabled = true;
+            resizeBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Resizing...';
+            progressContainer.style.display = 'block';
+            progressFill.style.width = '0%';
+            
+            resizedImages = [];
+            
+            for(let i = 0; i < selectedFiles.length; i++) {
+                const file = selectedFiles[i];
+                progressFill.style.width = `${(i / selectedFiles.length) * 100}%`;
+                progressText.innerText = `Processing ${i+1}/${selectedFiles.length}: ${file.name}`;
+                
+                const resizedBlob = await resizeImage(file);
+                if(resizedBlob) {
+                    resizedImages.push({
+                        originalName: file.name,
+                        blob: resizedBlob,
+                        size: resizedBlob.size,
+                        url: URL.createObjectURL(resizedBlob)
+                    });
+                }
+            }
+            
+            progressFill.style.width = '100%';
+            progressText.innerText = 'Complete!';
+            setTimeout(() => { progressContainer.style.display = 'none'; }, 1000);
+            
+            // Update preview with first resized image
+            if(resizedImages.length > 0 && comparisonContainer) {
+                const previewImg = document.getElementById('previewResized');
+                if(previewImg) {
+                    previewImg.src = resizedImages[0].url;
+                    document.getElementById('previewSize').innerHTML = `${(resizedImages[0].size / 1024).toFixed(1)} KB`;
+                }
+            }
+            
+            downloadAllBtn.style.display = 'flex';
+            resizeBtn.disabled = false;
+            resizeBtn.innerHTML = '<i class="fas fa-magic"></i> Resize All Images';
+            showToast(`✅ ${resizedImages.length} images resized successfully!`);
+        }
+
+        async function resizeImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        let width = parseInt(widthInput.value);
+                        let height = parseInt(heightInput.value);
+                        const maintain = maintainRatio.checked;
+                        
+                        if(maintain && width && height) {
+                            const ratio = img.width / img.height;
+                            const targetRatio = width / height;
+                            if(ratio > targetRatio) height = Math.round(width / ratio);
+                            else width = Math.round(height * ratio);
+                        } else if(maintain && width && !height) {
+                            height = Math.round(width / (img.width / img.height));
+                        } else if(maintain && !width && height) {
+                            width = Math.round(height * (img.width / img.height));
+                        }
+                        
+                        if(!width && !height) { width = img.width; height = img.height; }
+                        if(!width) width = Math.round(height * (img.width / img.height));
+                        if(!height) height = Math.round(width / (img.width / img.height));
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const format = document.getElementById('formatSelect').value;
+                        const quality = parseInt(qualitySlider.value) / 100;
+                        let mimeType = 'image/jpeg';
+                        let ext = 'jpg';
+                        
+                        if(format === 'png') { mimeType = 'image/png'; ext = 'png'; }
+                        else if(format === 'webp') { mimeType = 'image/webp'; ext = 'webp'; }
+                        else if(format === 'original') {
+                            if(file.type === 'image/png') mimeType = 'image/png';
+                            else if(file.type === 'image/webp') mimeType = 'image/webp';
+                            else mimeType = 'image/jpeg';
+                        }
+                        
+                        canvas.toBlob((blob) => {
+                            resolve(blob);
+                        }, mimeType, quality);
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function downloadAll() {
+            if(resizedImages.length === 0) { alert('No resized images to download!'); return; }
+            
+            const zip = new JSZip();
+            for(const img of resizedImages) {
+                const ext = document.getElementById('formatSelect').value;
+                let finalExt = 'jpg';
+                if(ext === 'png') finalExt = 'png';
+                else if(ext === 'webp') finalExt = 'webp';
+                else finalExt = img.originalName.split('.').pop();
+                
+                const newName = img.originalName.replace(/\.[^/.]+$/, `_resized.${finalExt}`);
+                zip.file(newName, img.blob);
+            }
+            
+            const content = await zip.generateAsync({ type: 'blob' });
+            const url = URL.createObjectURL(content);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `resized_images_${Date.now()}.zip`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast(`✅ Downloaded ${resizedImages.length} images as ZIP!`);
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 3000);
+        }
+    </script>
+</body>
+</html>

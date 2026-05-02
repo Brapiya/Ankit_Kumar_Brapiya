@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Unit Converter - Brapiya Tools | Professional Unit Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a2a3a, #1e4a6a); min-height: 100vh; }
+        
+        .header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 1.8rem; }
+        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+        .nav-buttons { margin-top: 12px; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
+        
+        .container { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
+        .card { background: white; border-radius: 32px; padding: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        /* Category Selector */
+        .category-selector { margin-bottom: 30px; }
+        .category-selector label { display: block; font-weight: 600; margin-bottom: 8px; color: #555; }
+        select { width: 100%; padding: 14px; border: 2px solid #e9ecef; border-radius: 60px; font-size: 1rem; outline: none; background: white; cursor: pointer; }
+        select:focus { border-color: #c0392b; }
+        
+        /* Converter Box */
+        .converter-box { background: #f8f9fa; border-radius: 24px; padding: 25px; margin-bottom: 20px; }
+        .unit-input { margin-bottom: 20px; }
+        .unit-input label { display: block; font-size: 0.75rem; font-weight: 600; margin-bottom: 8px; color: #666; }
+        .input-group { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+        .input-group input { flex: 2; padding: 14px; border: 2px solid #e9ecef; border-radius: 16px; font-size: 1rem; outline: none; text-align: right; font-weight: 500; }
+        .input-group select { flex: 1; padding: 14px; border: 2px solid #e9ecef; border-radius: 16px; background: white; }
+        .input-group input:focus, .input-group select:focus { border-color: #c0392b; }
+        
+        .swap-btn { display: flex; justify-content: center; margin: 15px 0; }
+        .swap-btn button { background: #c0392b; color: white; border: none; width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; transition: 0.2s; }
+        .swap-btn button:hover { transform: scale(1.05); background: #a93226; }
+        
+        /* Result Display */
+        .result-box { background: linear-gradient(135deg, #2c3e50, #1a2a3a); border-radius: 20px; padding: 20px; text-align: center; margin-top: 10px; }
+        .result-label { font-size: 0.7rem; color: #ffb347; letter-spacing: 1px; }
+        .result-value { font-size: 2rem; font-weight: 800; color: white; font-family: monospace; word-break: break-all; }
+        .result-unit { font-size: 0.9rem; color: #bbb; margin-top: 5px; }
+        
+        /* Precision Control */
+        .precision-control { display: flex; justify-content: flex-end; align-items: center; gap: 10px; margin-top: 15px; }
+        .precision-control label { font-size: 0.7rem; color: #666; }
+        .precision-control select { width: auto; padding: 6px 12px; font-size: 0.8rem; border-radius: 30px; }
+        
+        .action-buttons { display: flex; gap: 12px; margin-top: 20px; }
+        .btn { flex: 1; padding: 12px; border-radius: 50px; font-weight: 600; cursor: pointer; border: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: 0.2s; }
+        .btn-copy { background: #27ae60; color: white; }
+        .btn-reset { background: #7f8c8d; color: white; }
+        .btn:hover { transform: scale(1.02); }
+        
+        .note { background: #fff3cd; padding: 12px; border-radius: 16px; font-size: 0.7rem; color: #856404; text-align: center; margin-top: 20px; }
+        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 15px; margin-top: 30px; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 1000; }
+        
+        @media (max-width: 550px) {
+            .card { padding: 25px; }
+            .input-group { flex-direction: column; }
+            .input-group input, .input-group select { width: 100%; }
+            .result-value { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-arrows-alt-h"></i> Brapiya Unit Converter</h1>
+        <p>12+ Categories | Length, Weight, Temperature, Area, Volume, Speed, Time & More</p>
+        <div class="badge">🔥 REAL-TIME • SWAP UNITS • COPY RESULT • FREE 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="color-picker.html" class="nav-btn">Color Picker</a>
+            <a href="age-calculator.html" class="nav-btn">Age Calculator</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <!-- Category Selection -->
+            <div class="category-selector">
+                <label><i class="fas fa-tag"></i> Conversion Category</label>
+                <select id="category">
+                    <option value="length">📏 Length (meter, km, mile, foot, inch, cm)</option>
+                    <option value="weight">⚖️ Weight (kg, gram, pound, ounce)</option>
+                    <option value="temperature">🌡️ Temperature (Celsius, Fahrenheit, Kelvin)</option>
+                    <option value="area">📐 Area (sq meter, sq km, sq foot, acre, hectare)</option>
+                    <option value="volume">🧴 Volume (liter, ml, gallon, cup, pint)</option>
+                    <option value="speed">🏃 Speed (km/h, mph, m/s, knot)</option>
+                    <option value="time">⏰ Time (second, minute, hour, day, week, year)</option>
+                    <option value="energy">⚡ Energy (joule, calorie, watt-hour, eV)</option>
+                    <option value="pressure">🔧 Pressure (pascal, bar, psi, atm)</option>
+                    <option value="power">💡 Power (watt, kilowatt, horsepower)</option>
+                    <option value="data">💾 Data (byte, KB, MB, GB, TB)</option>
+                    <option value="angle">📐 Angle (degree, radian, gradian)</option>
+                </select>
+            </div>
+            
+            <!-- Converter Box -->
+            <div class="converter-box">
+                <div class="unit-input">
+                    <label>From</label>
+                    <div class="input-group">
+                        <input type="number" id="fromValue" value="1" step="any">
+                        <select id="fromUnit"></select>
+                    </div>
+                </div>
+                
+                <div class="swap-btn">
+                    <button onclick="swapUnits()"><i class="fas fa-exchange-alt"></i></button>
+                </div>
+                
+                <div class="unit-input">
+                    <label>To</label>
+                    <div class="input-group">
+                        <input type="text" id="toValue" readonly placeholder="Result">
+                        <select id="toUnit"></select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Result Display -->
+            <div class="result-box">
+                <div class="result-label"><i class="fas fa-equals"></i> CONVERSION RESULT</div>
+                <div class="result-value" id="resultValue">1.00</div>
+                <div class="result-unit" id="resultUnit"></div>
+            </div>
+            
+            <!-- Precision Control -->
+            <div class="precision-control">
+                <label>Decimal Places:</label>
+                <select id="precision">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                </select>
+            </div>
+            
+            <div class="action-buttons">
+                <button class="btn btn-copy" onclick="copyResult()"><i class="fas fa-copy"></i> Copy Result</button>
+                <button class="btn btn-reset" onclick="resetConverter()"><i class="fas fa-redo-alt"></i> Reset</button>
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-info-circle"></i> Enter value in the "From" field to see instant conversion. Use Swap button to reverse units.
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">✅ Copied!</div>
+    
+    <footer>
+        <p>© 2026 Brapiya Tools | Professional Unit Converter | 12+ Categories | Real-time Conversion</p>
+        <p>🇮🇳 Jai Hind | Convert any unit instantly 🇮🇳</p>
+    </footer>
+    
+    <script>
+        // Unit definitions for each category
+        const unitData = {
+            length: {
+                units: ['meter', 'kilometer', 'mile', 'foot', 'inch', 'centimeter'],
+                factors: { meter: 1, kilometer: 0.001, mile: 0.000621371, foot: 3.28084, inch: 39.3701, centimeter: 100 }
+            },
+            weight: {
+                units: ['kilogram', 'gram', 'milligram', 'pound', 'ounce'],
+                factors: { kilogram: 1, gram: 1000, milligram: 1000000, pound: 2.20462, ounce: 35.274 }
+            },
+            temperature: {
+                units: ['celsius', 'fahrenheit', 'kelvin'],
+                special: true
+            },
+            area: {
+                units: ['sq_meter', 'sq_kilometer', 'sq_foot', 'acre', 'hectare', 'sq_mile'],
+                factors: { sq_meter: 1, sq_kilometer: 0.000001, sq_foot: 10.7639, acre: 0.000247105, hectare: 0.0001, sq_mile: 3.861e-7 }
+            },
+            volume: {
+                units: ['liter', 'milliliter', 'gallon', 'quart', 'pint', 'cup'],
+                factors: { liter: 1, milliliter: 1000, gallon: 0.264172, quart: 1.05669, pint: 2.11338, cup: 4.22675 }
+            },
+            speed: {
+                units: ['kmh', 'mph', 'ms', 'knot'],
+                factors: { kmh: 1, mph: 0.621371, ms: 0.277778, knot: 0.539957 }
+            },
+            time: {
+                units: ['second', 'minute', 'hour', 'day', 'week', 'year'],
+                factors: { second: 1, minute: 0.0166667, hour: 0.000277778, day: 1.15741e-5, week: 1.65344e-6, year: 3.16881e-8 }
+            },
+            energy: {
+                units: ['joule', 'calorie', 'kwh', 'ev'],
+                factors: { joule: 1, calorie: 0.239006, kwh: 2.77778e-7, ev: 6.2415e+18 }
+            },
+            pressure: {
+                units: ['pascal', 'bar', 'psi', 'atm'],
+                factors: { pascal: 1, bar: 0.00001, psi: 0.000145038, atm: 9.86923e-6 }
+            },
+            power: {
+                units: ['watt', 'kilowatt', 'horsepower'],
+                factors: { watt: 1, kilowatt: 0.001, horsepower: 0.00134102 }
+            },
+            data: {
+                units: ['byte', 'kb', 'mb', 'gb', 'tb'],
+                factors: { byte: 1, kb: 0.000976563, mb: 9.53674e-7, gb: 9.31323e-10, tb: 9.09495e-13 }
+            },
+            angle: {
+                units: ['degree', 'radian', 'gradian'],
+                factors: { degree: 1, radian: 0.0174533, gradian: 1.11111 }
+            }
+        };
+        
+        // Unit display names
+        const unitNames = {
+            meter: 'Meter (m)', kilometer: 'Kilometer (km)', mile: 'Mile (mi)', foot: 'Foot (ft)', inch: 'Inch (in)', centimeter: 'Centimeter (cm)',
+            kilogram: 'Kilogram (kg)', gram: 'Gram (g)', milligram: 'Milligram (mg)', pound: 'Pound (lb)', ounce: 'Ounce (oz)',
+            celsius: 'Celsius (°C)', fahrenheit: 'Fahrenheit (°F)', kelvin: 'Kelvin (K)',
+            sq_meter: 'Square Meter (m²)', sq_kilometer: 'Square Kilometer (km²)', sq_foot: 'Square Foot (ft²)', acre: 'Acre', hectare: 'Hectare', sq_mile: 'Square Mile (mi²)',
+            liter: 'Liter (L)', milliliter: 'Milliliter (mL)', gallon: 'Gallon (gal)', quart: 'Quart (qt)', pint: 'Pint (pt)', cup: 'Cup',
+            kmh: 'km/h', mph: 'mph', ms: 'm/s', knot: 'Knot',
+            second: 'Second (s)', minute: 'Minute (min)', hour: 'Hour (h)', day: 'Day', week: 'Week', year: 'Year',
+            joule: 'Joule (J)', calorie: 'Calorie (cal)', kwh: 'kWh', ev: 'Electron Volt (eV)',
+            pascal: 'Pascal (Pa)', bar: 'Bar', psi: 'PSI', atm: 'Atmosphere (atm)',
+            watt: 'Watt (W)', kilowatt: 'Kilowatt (kW)', horsepower: 'Horsepower (hp)',
+            byte: 'Byte', kb: 'KB', mb: 'MB', gb: 'GB', tb: 'TB',
+            degree: 'Degree (°)', radian: 'Radian (rad)', gradian: 'Gradian (gon)'
+        };
+        
+        let currentCategory = 'length';
+        
+        function updateUnits() {
+            const category = document.getElementById('category').value;
+            currentCategory = category;
+            const data = unitData[category];
+            const fromSelect = document.getElementById('fromUnit');
+            const toSelect = document.getElementById('toUnit');
+            
+            fromSelect.innerHTML = '';
+            toSelect.innerHTML = '';
+            
+            data.units.forEach(unit => {
+                fromSelect.innerHTML += `<option value="${unit}">${unitNames[unit] || unit}</option>`;
+                toSelect.innerHTML += `<option value="${unit}">${unitNames[unit] || unit}</option>`;
+            });
+            
+            // Set default selections
+            if (category === 'length') {
+                fromSelect.value = 'meter';
+                toSelect.value = 'foot';
+            } else if (category === 'weight') {
+                fromSelect.value = 'kilogram';
+                toSelect.value = 'pound';
+            } else if (category === 'temperature') {
+                fromSelect.value = 'celsius';
+                toSelect.value = 'fahrenheit';
+            } else {
+                if (data.units[0]) fromSelect.value = data.units[0];
+                if (data.units[1]) toSelect.value = data.units[1];
+            }
+            
+            convert();
+        }
+        
+        function convertTemperature(value, from, to) {
+            let celsius;
+            if (from === 'celsius') celsius = value;
+            else if (from === 'fahrenheit') celsius = (value - 32) * 5/9;
+            else celsius = value - 273.15;
+            
+            if (to === 'celsius') return celsius;
+            if (to === 'fahrenheit') return celsius * 9/5 + 32;
+            return celsius + 273.15;
+        }
+        
+        function convert() {
+            let fromVal = parseFloat(document.getElementById('fromValue').value);
+            if (isNaN(fromVal)) fromVal = 0;
+            
+            const fromUnit = document.getElementById('fromUnit').value;
+            const toUnit = document.getElementById('toUnit').value;
+            const category = document.getElementById('category').value;
+            const precision = parseInt(document.getElementById('precision').value);
+            
+            let result;
+            
+            if (category === 'temperature') {
+                result = convertTemperature(fromVal, fromUnit, toUnit);
+            } else {
+                const data = unitData[category];
+                const fromFactor = data.factors[fromUnit];
+                const toFactor = data.factors[toUnit];
+                const inBase = fromVal / fromFactor;
+                result = inBase * toFactor;
+            }
+            
+            const formatted = result.toFixed(precision);
+            document.getElementById('toValue').value = formatted;
+            document.getElementById('resultValue').innerHTML = formatted;
+            document.getElementById('resultUnit').innerHTML = unitNames[toUnit] || toUnit;
+        }
+        
+        function swapUnits() {
+            const fromSelect = document.getElementById('fromUnit');
+            const toSelect = document.getElementById('toUnit');
+            const fromVal = document.getElementById('fromValue');
+            const toVal = document.getElementById('toValue');
+            
+            // Swap values
+            const tempVal = fromVal.value;
+            fromVal.value = toVal.value;
+            
+            // Swap units
+            const tempUnit = fromSelect.value;
+            fromSelect.value = toSelect.value;
+            toSelect.value = tempUnit;
+            
+            convert();
+        }
+        
+        function copyResult() {
+            const result = document.getElementById('toValue').value;
+            navigator.clipboard.writeText(result);
+            showToast('✅ Result copied!');
+        }
+        
+        function resetConverter() {
+            document.getElementById('fromValue').value = '1';
+            document.getElementById('category').dispatchEvent(new Event('change'));
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+        
+        // Event listeners
+        document.getElementById('category').addEventListener('change', updateUnits);
+        document.getElementById('fromValue').addEventListener('input', convert);
+        document.getElementById('fromUnit').addEventListener('change', convert);
+        document.getElementById('toUnit').addEventListener('change', convert);
+        document.getElementById('precision').addEventListener('change', convert);
+        
+        // Initialize
+        updateUnits();
+    </script>
+</body>
+</html>

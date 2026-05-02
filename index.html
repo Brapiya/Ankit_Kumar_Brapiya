@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Brapiya Tools - 30+ Professional Free Tools by Ankit Brapiya</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fc;
+            overflow-x: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a2a3a 0%, #1e4a6a 100%);
+            color: white;
+            padding: 50px 20px 60px;
+            text-align: center;
+            position: relative;
+        }
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .header h1 i {
+            color: #ffb347;
+        }
+        .badge {
+            display: inline-block;
+            background: #ffb347;
+            color: #0a2a3a;
+            padding: 5px 15px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .nav-buttons {
+            margin-top: 25px;
+        }
+        .nav-btn {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 40px;
+            text-decoration: none;
+            margin: 0 10px;
+            display: inline-block;
+            transition: 0.3s;
+        }
+        .nav-btn:hover {
+            background: #ffb347;
+            color: #0a2a3a;
+        }
+
+        .stats {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            top: -30px;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            background: white;
+            border-radius: 60px;
+            padding: 25px 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #c0392b;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .search-section {
+            max-width: 600px;
+            margin: 20px auto 30px;
+            padding: 0 20px;
+        }
+        .search-box {
+            background: white;
+            border-radius: 60px;
+            padding: 5px 5px 5px 25px;
+            display: flex;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid #eef2f6;
+        }
+        .search-box input {
+            flex: 1;
+            padding: 15px 0;
+            border: none;
+            background: transparent;
+            font-size: 1rem;
+            outline: none;
+        }
+        .search-box button {
+            background: #c0392b;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .search-box button:hover {
+            background: #a93226;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+        }
+        .section-title h2 {
+            font-size: 1.8rem;
+            color: #1a2a3a;
+        }
+        .section-title span {
+            color: #c0392b;
+        }
+        .section-title p {
+            color: #666;
+            margin-top: 8px;
+        }
+
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 35px;
+        }
+        .cat-tab {
+            background: #ecf0f1;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .cat-tab.active {
+            background: #c0392b;
+            color: white;
+        }
+        .cat-tab:hover {
+            background: #c0392b;
+            color: white;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        .tool-card {
+            background: white;
+            border-radius: 24px;
+            padding: 25px;
+            text-decoration: none;
+            color: #333;
+            display: block;
+            transition: all 0.2s ease;
+            border: 1px solid #eef2f6;
+            position: relative;
+        }
+        .tool-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.08);
+            border-color: #c0392b;
+        }
+        .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        .tool-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+        .tool-card p {
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+        .tool-tag {
+            display: inline-block;
+            background: #f0f4f8;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            margin-top: 12px;
+        }
+        .featured-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #ff4757;
+            color: white;
+            font-size: 0.7rem;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        .new-icon {
+            background: #2ecc71;
+        }
+
+        .cta-section {
+            background: linear-gradient(135deg, #0a2a3a, #1e4a6a);
+            margin: 50px 20px 0;
+            border-radius: 40px;
+            padding: 50px 20px;
+            text-align: center;
+            color: white;
+        }
+        .cta-section h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        .cta-btn {
+            background: #ffb347;
+            color: #0a2a3a;
+            padding: 12px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-block;
+            margin: 10px;
+            transition: 0.3s;
+        }
+        .cta-btn:hover {
+            transform: scale(1.02);
+            background: #ff9f1a;
+        }
+
+        footer {
+            background: #0a1a2a;
+            color: #ccc;
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+        }
+        footer a {
+            color: #ffb347;
+            text-decoration: none;
+        }
+
+        @media (max-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                border-radius: 30px;
+                padding: 20px;
+                gap: 15px;
+            }
+            .header h1 {
+                font-size: 2rem;
+            }
+            .tools-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .cta-section h3 {
+                font-size: 1.3rem;
+            }
+            .cta-btn {
+                display: block;
+                margin: 10px auto;
+                width: 80%;
+            }
+            .nav-btn {
+                margin: 5px;
+                display: inline-block;
+            }
+            .search-box {
+                flex-direction: column;
+                padding: 15px;
+                border-radius: 30px;
+            }
+            .search-box input {
+                text-align: center;
+                margin-bottom: 10px;
+            }
+            .stat-number {
+                font-size: 1.3rem;
+            }
+            .category-tabs {
+                gap: 8px;
+            }
+            .cat-tab {
+                padding: 5px 12px;
+                font-size: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="badge"><i class="fas fa-tools"></i> 🔥 30+ PROFESSIONAL FREE TOOLS</div>
+        <h1><i class="fas fa-crown"></i> Brapiya Tools</h1>
+        <p>30+ Professional Free Tools | Batch Processing | No Watermark | No Signup</p>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
+            <a href="../defence-knowledge-brapiya/index.html" class="nav-btn"><i class="fas fa-shield-alt"></i> Defence Website</a>
+            <a href="https://youtube.com/@AnkitKumarBrapiya" target="_blank" class="nav-btn"><i class="fab fa-youtube"></i> YouTube</a>
+        </div>
+    </div>
+
+    <div class="stats">
+        <div class="stats-grid">
+            <div class="stat-item"><div class="stat-number">30+</div><div class="stat-label">Free Tools</div></div>
+            <div class="stat-item"><div class="stat-number">100%</div><div class="stat-label">Free</div></div>
+            <div class="stat-item"><div class="stat-number">No</div><div class="stat-label">Signup</div></div>
+            <div class="stat-item"><div class="stat-number">⚡ Fast</div><div class="stat-label">Batch Processing</div></div>
+        </div>
+    </div>
+
+    <div class="search-section">
+        <div class="search-box">
+            <i class="fas fa-search" style="color:#999;"></i>
+            <input type="text" id="searchInput" placeholder="🔍 Search tool... (PDF, Video, Image, YouTube, Instagram)">
+            <button onclick="searchTools()"><i class="fas fa-search"></i> Find</button>
+        </div>
+        <p style="font-size: 0.7rem; text-align: center; margin-top: 10px; color: #666;">
+            💡 Popular: YouTube Cutter, PDF Merger, Image Resizer, Video to MP3, Screen Recorder
+        </p>
+    </div>
+
+    <div class="container">
+        <div class="category-tabs">
+            <button class="cat-tab active" onclick="filterCategory('all')">All Tools</button>
+            <button class="cat-tab" onclick="filterCategory('video')">🎬 Video Tools</button>
+            <button class="cat-tab" onclick="filterCategory('pdf')">📄 PDF Tools</button>
+            <button class="cat-tab" onclick="filterCategory('image')">🖼️ Image Tools</button>
+            <button class="cat-tab" onclick="filterCategory('utility')">🔧 Utility</button>
+            <button class="cat-tab" onclick="filterCategory('developer')">💻 Developer</button>
+        </div>
+
+        <div class="section-title">
+            <h2>🛠️ All <span>Brapiya Professional Tools</span></h2>
+            <p>Choose any tool below - Batch Processing | No Watermark | 100% Free</p>
+        </div>
+        <div class="tools-grid" id="toolsGrid"></div>
+    </div>
+
+    <div class="cta-section">
+        <h3>🔥 Want More Tools?</h3>
+        <p>Follow Brapiya for new tools every week! 🚀</p>
+        <a href="https://youtube.com/@AnkitKumarBrapiya" target="_blank" class="cta-btn"><i class="fab fa-youtube"></i> Subscribe on YouTube</a>
+        <a href="mailto:army963199@gmail.com" class="cta-btn" style="background: #c0392b;"><i class="fas fa-envelope"></i> Request a Tool</a>
+    </div>
+
+    <footer>
+        <p>© 2026 Brapiya Tools | Created by <strong>Ankit Kumar Brapiya</strong></p>
+        <p><i class="fas fa-envelope"></i> army963199@gmail.com | <i class="fab fa-youtube"></i> @AnkitKumarBrapiya</p>
+        <p>🇮🇳 <strong>Jai Hind</strong> | Made with ❤️ for Students | Batch Processing | No Watermark 🇮🇳</p>
+    </footer>
+
+    <script>
+        const tools = [
+            // 🎬 VIDEO TOOLS
+            { name: "YouTube Video Cutter", icon: "fab fa-youtube", color: "#ff0000", desc: "Cut any part from YouTube video (2hr → 10min)", link: "youtube-cutter.html", tag: "Video", category: "video", featured: true, new: true },
+            { name: "Professional Screen Recorder", icon: "fas fa-video", color: "#e74c3c", desc: "Screen + Face Cam + Draw + Cloud Upload", link: "screen-recorder.html", tag: "Video", category: "video", featured: true, new: true },
+            { name: "Video to MP3 Converter", icon: "fas fa-music", color: "#27ae60", desc: "Extract audio from video | Batch convert", link: "video-to-mp3.html", tag: "Audio", category: "video", featured: true, new: true },
+            { name: "YouTube Thumbnail Downloader", icon: "fab fa-youtube", color: "#ff0000", desc: "Download any YouTube video thumbnail in HD", link: "yt-thumbnail.html", tag: "Download", category: "video", featured: false },
+            { name: "YouTube Downloader", icon: "fab fa-youtube", color: "#ff0000", desc: "Download YouTube videos in HD/4K/MP3", link: "youtube-downloader.html", tag: "Video", category: "video", featured: false },
+            
+            // 📄 PDF TOOLS
+            { name: "PDF Merger", icon: "fas fa-file-pdf", color: "#e74c3c", desc: "Merge multiple PDFs into one | Drag to reorder", link: "pdf-merger.html", tag: "PDF", category: "pdf", featured: true },
+            { name: "PDF Compressor", icon: "fas fa-compress-alt", color: "#e74c3c", desc: "Reduce PDF file size | Quality control", link: "pdf-compressor.html", tag: "PDF", category: "pdf", featured: true },
+            { name: "PDF Page Remover", icon: "fas fa-trash-alt", color: "#e74c3c", desc: "Remove unwanted pages from PDF", link: "pdf-page-remover.html", tag: "PDF", category: "pdf", featured: true },
+            { name: "Image to PDF", icon: "fas fa-file-image", color: "#e74c3c", desc: "Convert images (JPG/PNG) to PDF | Batch", link: "image-to-pdf.html", tag: "PDF", category: "pdf", featured: false },
+            { name: "PDF to PowerPoint", icon: "fas fa-file-powerpoint", color: "#e74c3c", desc: "Convert PDF to PPTX | Each page = one slide", link: "pdf-to-ppt.html", tag: "PDF", category: "pdf", featured: false },
+            
+            // 🖼️ IMAGE TOOLS
+            { name: "Professional Image Resizer", icon: "fas fa-arrows-alt", color: "#f39c12", desc: "Batch resize | Preset sizes | Format convert", link: "image-resizer.html", tag: "Image", category: "image", featured: true, new: true },
+            { name: "Image Compressor", icon: "fas fa-compress-alt", color: "#667eea", desc: "Reduce image size without losing quality", link: "image-compressor.html", tag: "Image", category: "image", featured: true },
+            { name: "Instagram Story Saver", icon: "fab fa-instagram", color: "#e4405f", desc: "Download Instagram stories", link: "instagram-saver.html", tag: "Social", category: "image", featured: false },
+            
+            // 🔧 UTILITY TOOLS
+            { name: "Resume Builder", icon: "fas fa-file-alt", color: "#f39c12", desc: "Create professional resume in minutes", link: "resume-builder.html", tag: "Career", category: "utility", featured: true },
+            { name: "QR Code Generator", icon: "fas fa-qrcode", color: "#e74c3c", desc: "Generate QR codes for any link/text", link: "qr-generator.html", tag: "Utility", category: "utility", featured: true },
+            
+            { name: "Text to Speech", icon: "fas fa-volume-up", color: "#1abc9c", desc: "Convert text to audio instantly", link: "text-to-speech.html", tag: "Audio", category: "utility", featured: false },
+            { name: "Word Counter", icon: "fas fa-calculator", color: "#3498db", desc: "Count words, characters, sentences", link: "word-counter.html", tag: "Writing", category: "utility", featured: false },
+            { name: "Age Calculator", icon: "fas fa-birthday-cake", color: "#e67e22", desc: "Calculate age from date of birth", link: "age-calculator.html", tag: "Calculator", category: "utility", featured: false },
+            { name: "BMI Calculator", icon: "fas fa-heartbeat", color: "#27ae60", desc: "Check Body Mass Index", link: "bmi-calculator.html", tag: "Health", category: "utility", featured: false },
+            { name: "Unit Converter", icon: "fas fa-ruler-combined", color: "#8e44ad", desc: "Convert length, weight, temperature", link: "unit-converter.html", tag: "Converter", category: "utility", featured: false },
+            { name: "Color Picker", icon: "fas fa-eyedropper", color: "#d35400", desc: "Pick colors from screen", link: "color-picker.html", tag: "Design", category: "utility", featured: false },
+            
+            { name: "Timer & Stopwatch", icon: "fas fa-hourglass-half", color: "#f1c40f", desc: "Countdown timer and stopwatch", link: "timer-stopwatch.html", tag: "Utility", category: "utility", featured: false },
+            { name: "Case Converter", icon: "fas fa-magic", color: "#9b59b6", desc: "Convert text to UPPER, lower, Title case", link: "case-converter.html", tag: "Text", category: "utility", featured: false },
+            
+            // 💻 DEVELOPER TOOLS
+            { name: "JSON Formatter", icon: "fas fa-code", color: "#1abc9c", desc: "Format, beautify & validate JSON", link: "json-formatter.html", tag: "Developer", category: "developer", featured: true },
+            { name: "Base64 Encoder", icon: "fas fa-code", color: "#16a085", desc: "Encode/Decode text to Base64", link: "base64-encoder.html", tag: "Developer", category: "developer", featured: false },
+            { name: "URL Encoder", icon: "fas fa-link", color: "#2980b9", desc: "Encode/Decode URLs", link: "url-encoder.html", tag: "Developer", category: "developer", featured: false }
+        ];
+
+        let currentCategory = 'all';
+
+        function displayTools(filteredTools) {
+            const grid = document.getElementById('toolsGrid');
+            if(!grid) return;
+            grid.innerHTML = filteredTools.map(tool => `
+                <a href="${tool.link}" class="tool-card">
+                    ${tool.featured ? '<span class="featured-icon">⭐ Featured</span>' : ''}
+                    ${tool.new ? '<span class="featured-icon new-icon">🔥 NEW</span>' : ''}
+                    <div class="tool-icon" style="color:${tool.color}"><i class="${tool.icon}"></i></div>
+                    <h3>${tool.name}</h3>
+                    <p>${tool.desc}</p>
+                    <span class="tool-tag">${tool.tag}</span>
+                </a>
+            `).join('');
+        }
+
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.cat-tab').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            let filtered = tools;
+            if(category !== 'all') {
+                filtered = tools.filter(tool => tool.category === category);
+            }
+            
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if(query) {
+                filtered = filtered.filter(tool => 
+                    tool.name.toLowerCase().includes(query) || 
+                    tool.tag.toLowerCase().includes(query) ||
+                    tool.desc.toLowerCase().includes(query)
+                );
+            }
+            
+            displayTools(filtered);
+            
+            if(filtered.length === 0) {
+                document.getElementById('toolsGrid').innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:50px;"><i class="fas fa-search" style="font-size:3rem; color:#ccc;"></i><h3>No tools found</h3><p>Try searching for "PDF", "Video", "Image", "YouTube"</p></div>';
+            }
+        }
+
+        function searchTools() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            let filtered = tools;
+            
+            if(currentCategory !== 'all') {
+                filtered = filtered.filter(tool => tool.category === currentCategory);
+            }
+            
+            filtered = filtered.filter(tool => 
+                tool.name.toLowerCase().includes(query) || 
+                tool.tag.toLowerCase().includes(query) ||
+                tool.desc.toLowerCase().includes(query)
+            );
+            
+            displayTools(filtered);
+            
+            if(filtered.length === 0) {
+                document.getElementById('toolsGrid').innerHTML = '<div style="text-align:center; grid-column:1/-1; padding:50px;"><i class="fas fa-search" style="font-size:3rem; color:#ccc;"></i><h3>No tools found</h3><p>Try searching for "PDF", "Video", "Image", "YouTube"</p></div>';
+            }
+        }
+
+        // Initial display
+        displayTools(tools);
+    </script>
+</body>
+</html>
