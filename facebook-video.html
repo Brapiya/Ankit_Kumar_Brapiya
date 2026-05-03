@@ -78,7 +78,7 @@
     </div>
     
     <div class="toast" id="toast">✅ Ready!</div>
-    
+    <div id="navbar"></div>
     <footer>
         <p>© 2026 Brapiya Tools | Free Facebook Video Downloader | No Payment Required</p>
         <p>🇮🇳 Jai Hind 🇮🇳</p>
@@ -130,5 +130,10 @@
             setTimeout(() => toast.style.display = 'none', 2500);
         }
     </script>
+    <script>
+    fetch('navbar.html')
+        .then(res => res.text())
+        .then(data => document.getElementById('navbar').innerHTML = data);
+</script>
 </body>
 </html>

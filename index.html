@@ -2,6 +2,459 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brapiya Tools - Professional Navbar</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f7fc;
+            padding-top: 70px;
+        }
+        
+        /* ========== NAVBAR STYLES ========== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, #0a2a3a, #1e4a6a);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+        
+        /* Logo */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: #ffb347;
+        }
+        
+        .logo h1 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+        }
+        
+        .logo span {
+            color: #ffb347;
+        }
+        
+        .logo p {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.7);
+        }
+        
+        /* Navigation Menu */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            list-style: none;
+        }
+        
+        .nav-item {
+            position: relative;
+        }
+        
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-radius: 40px;
+            transition: 0.3s;
+        }
+        
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .nav-link.active {
+            background: #c0392b;
+        }
+        
+        .nav-link i {
+            font-size: 1rem;
+        }
+        
+        /* Dropdown */
+        .dropdown-menu {
+            position: absolute;
+            top: 45px;
+            left: 0;
+            background: white;
+            min-width: 220px;
+            border-radius: 16px;
+            padding: 10px 0;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s;
+            z-index: 100;
+        }
+        
+        .nav-item:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            top: 50px;
+        }
+        
+        .dropdown-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            color: #333;
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+        }
+        
+        .dropdown-menu a:hover {
+            background: #f8f9fa;
+            color: #c0392b;
+        }
+        
+        .dropdown-menu i {
+            width: 25px;
+            color: #c0392b;
+        }
+        
+        /* Search Box */
+        .search-box {
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.15);
+            border-radius: 40px;
+            padding: 5px 15px;
+        }
+        
+        .search-box input {
+            background: transparent;
+            border: none;
+            padding: 8px;
+            color: white;
+            outline: none;
+            width: 180px;
+        }
+        
+        .search-box input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .search-box button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+        
+        /* Theme Toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: 0.3s;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Mobile Menu */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        @media (max-width: 1024px) {
+            .menu-toggle {
+                display: block;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: #0a2a3a;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+                transition: 0.3s;
+                overflow-y: auto;
+            }
+            
+            .nav-menu.active {
+                left: 0;
+            }
+            
+            .nav-item {
+                width: 100%;
+            }
+            
+            .nav-link {
+                width: 100%;
+            }
+            
+            .dropdown-menu {
+                position: static;
+                opacity: 1;
+                visibility: visible;
+                display: none;
+                background: rgba(255,255,255,0.1);
+                margin-left: 20px;
+                width: calc(100% - 20px);
+            }
+            
+            .dropdown-menu a {
+                color: white;
+            }
+            
+            .nav-item.active-dropdown .dropdown-menu {
+                display: block;
+            }
+            
+            .search-box {
+                width: 100%;
+                margin: 10px 0;
+            }
+            
+            .search-box input {
+                width: 100%;
+            }
+        }
+        
+        /* Content */
+        .content {
+            max-width: 1400px;
+            margin: 30px auto;
+            padding: 0 25px;
+        }
+        
+        /* Dark Theme */
+        body.dark {
+            background: #1a1a2e;
+        }
+        
+        body.dark .navbar {
+            background: linear-gradient(135deg, #0f0f1a, #1a1a2e);
+        }
+        
+        body.dark .dropdown-menu {
+            background: #2d2d44;
+        }
+        
+        body.dark .dropdown-menu a {
+            color: #ccc;
+        }
+        
+        body.dark .dropdown-menu a:hover {
+            background: #535368;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <div>
+                    <h1>Brapiya <span>Tools</span></h1>
+                    <p>Professional Free Tools</p>
+                </div>
+            </div>
+            
+            <ul class="nav-menu" id="navMenu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                
+                <!-- Tools Dropdown -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-tools"></i> Tools
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="image-compressor.html"><i class="fas fa-compress-alt"></i> Image Compressor</a>
+                        <a href="image-resizer.html"><i class="fas fa-arrows-alt"></i> Image Resizer</a>
+                        <a href="qr-generator.html"><i class="fas fa-qrcode"></i> QR Generator</a>
+                        
+                        <a href="text-to-speech.html"><i class="fas fa-volume-up"></i> Text to Speech</a>
+                        <a href="word-counter.html"><i class="fas fa-calculator"></i> Word Counter</a>
+                        <a href="age-calculator.html"><i class="fas fa-birthday-cake"></i> Age Calculator</a>
+                        <a href="bmi-calculator.html"><i class="fas fa-heartbeat"></i> BMI Calculator</a>
+                        <a href="unit-converter.html"><i class="fas fa-ruler-combined"></i> Unit Converter</a>
+                        <a href="color-picker.html"><i class="fas fa-eyedropper"></i> Color Picker</a>
+                        <a href="case-converter.html"><i class="fas fa-magic"></i> Case Converter</a>
+                    </div>
+                </li>
+                
+                <!-- PDF Tools Dropdown -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-file-pdf"></i> PDF Tools
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="pdf-merger.html"><i class="fas fa-compress-alt"></i> PDF Merger</a>
+                        <a href="pdf-compressor.html"><i class="fas fa-file-pdf"></i> PDF Compressor</a>
+                        <a href="pdf-page-remover.html"><i class="fas fa-trash-alt"></i> PDF Page Remover</a>
+                        <a href="image-to-pdf.html"><i class="fas fa-file-image"></i> Image to PDF</a>
+                        <a href="pdf-to-ppt.html"><i class="fas fa-file-powerpoint"></i> PDF to PPT</a>
+                    </div>
+                </li>
+                
+                <!-- Video Tools Dropdown -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-video"></i> Video Tools
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="youtube-cutter.html"><i class="fab fa-youtube"></i> YouTube Cutter</a>
+                        <a href="youtube-downloader.html"><i class="fab fa-youtube"></i> YouTube Downloader</a>
+                        <a href="yt-thumbnail.html"><i class="fas fa-image"></i> YouTube Thumbnail</a>
+                        <a href="screen-recorder.html"><i class="fas fa-video"></i> Screen Recorder</a>
+                        <a href="video-to-mp3.html"><i class="fas fa-music"></i> Video to MP3</a>
+                        <a href="instagram-video.html"><i class="fab fa-instagram"></i> Instagram Downloader</a>
+                        <a href="facebook-video.html"><i class="fab fa-facebook"></i> Facebook Downloader</a>
+                    </div>
+                </li>
+                
+                <!-- Developer Tools Dropdown -->
+                <li class="nav-item">
+                    <a href="#" class="nav-link">
+                        <i class="fas fa-code"></i> Dev Tools
+                        <i class="fas fa-chevron-down"></i>
+                    </a>
+                    <div class="dropdown-menu">
+                        <a href="json-formatter.html"><i class="fas fa-code"></i> JSON Formatter</a>
+                        <a href="base64-encoder.html"><i class="fas fa-code"></i> Base64 Encoder</a>
+                        <a href="url-encoder.html"><i class="fas fa-link"></i> URL Encoder</a>
+                        
+                    </div>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="https://youtube.com/@AnkitKumarBrapiya" target="_blank" class="nav-link">
+                        <i class="fab fa-youtube"></i> YouTube
+                    </a>
+                </li>
+                
+                <li class="nav-item">
+                    <a href="contact.html" class="nav-link">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                
+                <!-- Search Box -->
+                <div class="search-box">
+                    <input type="text" placeholder="Search tools..." id="searchInput">
+                    <button onclick="searchTools()"><i class="fas fa-search"></i></button>
+                </div>
+                
+                <!-- Theme Toggle -->
+                <button class="theme-toggle" onclick="toggleTheme()">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </ul>
+            
+            <button class="menu-toggle" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+    
+    <div class="content">
+        <!-- Your page content here -->
+    </div>
+    
+    <script>
+        function toggleMenu() {
+            document.getElementById('navMenu').classList.toggle('active');
+        }
+        
+        function toggleTheme() {
+            document.body.classList.toggle('dark');
+            const icon = document.querySelector('.theme-toggle i');
+            if (document.body.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+            localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+        }
+        
+        // Load theme from localStorage
+        if (localStorage.getItem('theme') === 'dark') {
+            document.body.classList.add('dark');
+        }
+        
+        function searchTools() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            if (query) {
+                window.location.href = `index.html?search=${encodeURIComponent(query)}`;
+            }
+        }
+        
+        // Handle dropdown on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            const link = item.querySelector('.nav-link');
+            const dropdown = item.querySelector('.dropdown-menu');
+            if (dropdown && window.innerWidth <= 1024) {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    item.classList.toggle('active-dropdown');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
     <title>Brapiya Tools - 30+ Professional Free Tools by Ankit Brapiya</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -389,6 +842,7 @@
             { name: "YouTube Downloader", icon: "fab fa-youtube", color: "#ff0000", desc: "Download YouTube videos in HD/4K/MP3", link: "youtube-downloader.html", tag: "Video", category: "video", featured: false },
             { name: "Instagram Video Downloader", icon: "fab fa-instagram", color: "#e4405f", desc: "Download Reels, Videos & Posts - 100% Free", link: "instagram-video.html", tag: "Download", category: "video", featured: true },
              { name: "Instagram Story Saver", icon: "fab fa-instagram", color: "#e4405f", desc: "Download Instagram stories", link: "instagram-saver.html", tag: "Social", category: "image", featured: false },
+             { name: "Facebook Video Downloader", icon: "fab fa-facebook", color: "#1877F2", desc: "Download Facebook videos & reels - Fast & Free", link: "facebook-video.html", tag: "Download", category: "video", featured: true },
              
             
             // 📄 PDF TOOLS

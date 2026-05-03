@@ -2,320 +2,160 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>YouTube Downloader - Brapiya Tools | Download & Share Video</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Downloader - Brapiya Tools</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a2a3a, #1e4a6a); min-height: 100vh; }
-        .header { background: rgba(0,0,0,0.2); color: white; padding: 25px 20px; text-align: center; }
-        .header h1 { font-size: 2rem; }
+        
+        .header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); color: white; padding: 25px; text-align: center; }
+        .header h1 { font-size: 1.8rem; }
         .header h1 i { color: #ff0000; }
-        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
         .nav-buttons { margin-top: 12px; }
-        .nav-btn { background: rgba(255,255,255,0.15); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
-        .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
-        .card { background: white; border-radius: 24px; padding: 25px; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        .card-title { font-weight: 700; margin-bottom: 20px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; border-bottom: 2px solid #f0f0f0; padding-bottom: 12px; }
-        .input-group { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .input-group input { flex: 1; padding: 14px 18px; border: 2px solid #e9ecef; border-radius: 60px; font-size: 0.9rem; outline: none; }
-        .fetch-btn { background: linear-gradient(135deg, #c0392b, #e74c3c); color: white; border: none; padding: 0 25px; border-radius: 60px; font-weight: 600; cursor: pointer; }
-        .quality-grid { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
-        .quality-card { background: #f8f9fa; border: 2px solid #e9ecef; border-radius: 12px; padding: 10px; text-align: center; cursor: pointer; flex: 1; min-width: 80px; }
-        .quality-card.selected { border-color: #c0392b; background: #fadbd8; }
-        .time-inputs { display: flex; gap: 15px; margin: 15px 0; }
-        .time-inputs input { flex: 1; padding: 10px; border-radius: 12px; border: 1px solid #ddd; font-family: monospace; }
-        .preset { background: #ecf0f1; border: none; padding: 5px 12px; border-radius: 20px; cursor: pointer; margin-right: 8px; margin-bottom: 8px; }
-        .size-card { background: linear-gradient(135deg, #1a2a3a, #0a2a3a); border-radius: 20px; padding: 15px 20px; margin: 15px 0; color: white; }
-        .size-value { font-size: 2rem; font-weight: 800; font-family: monospace; }
-        .progress-container { margin-top: 15px; display: none; }
-        .progress-bar { background: #ecf0f1; border-radius: 30px; height: 8px; overflow: hidden; }
-        .progress-fill { background: #27ae60; width: 0%; height: 100%; transition: width 0.3s; }
-        .download-btn { background: linear-gradient(135deg, #27ae60, #2ecc71); color: white; border: none; padding: 14px 20px; border-radius: 50px; font-weight: 700; cursor: pointer; width: 100%; font-size: 1rem; margin-top: 10px; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
         
-        /* Share Guide - Important */
-        .share-guide { background: linear-gradient(135deg, #e8f4fd, #d6eaf8); border-radius: 20px; padding: 20px; margin-top: 20px; }
-        .share-guide h3 { color: #2c3e50; margin-bottom: 15px; font-size: 1rem; }
-        .share-steps { list-style: none; padding: 0; }
-        .share-steps li { padding: 8px 0; border-bottom: 1px solid #bdc3c7; display: flex; align-items: center; gap: 10px; }
-        .share-steps li:last-child { border-bottom: none; }
-        .step-icon { width: 30px; height: 30px; background: #27ae60; color: white; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: bold; }
+        .container { max-width: 700px; margin: 0 auto; padding: 30px 20px; }
+        .card { background: white; border-radius: 32px; padding: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); text-align: center; }
         
-        .info-text { background: #d5f5e3; padding: 12px; border-radius: 16px; margin-top: 15px; font-size: 0.8rem; text-align: center; }
-        .note { background: #fff3cd; padding: 12px; border-radius: 16px; font-size: 0.7rem; color: #856404; text-align: center; margin-top: 15px; }
-        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 20px; margin-top: 30px; }
-        .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 1000; }
-
-        @media (max-width: 768px) {
-            .size-value { font-size: 1.5rem; }
+        .input-group { display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap; }
+        .input-group input { flex: 1; padding: 16px 20px; border: 2px solid #e9ecef; border-radius: 60px; font-size: 1rem; outline: none; }
+        .input-group input:focus { border-color: #ff0000; }
+        .fetch-btn { background: linear-gradient(135deg, #ff0000, #c0392b); color: white; border: none; padding: 0 30px; border-radius: 60px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.2s; }
+        .fetch-btn:hover { transform: scale(1.02); }
+        
+        .result-box { margin-top: 25px; }
+        .method-card { background: #f8f9fa; border-radius: 20px; padding: 20px; margin-bottom: 15px; border: 1px solid #e9ecef; transition: 0.2s; text-align: left; }
+        .method-card:hover { border-color: #ff0000; }
+        .method-title { font-weight: 700; font-size: 1.1rem; margin-bottom: 8px; color: #ff0000; }
+        .method-desc { font-size: 0.8rem; color: #666; margin-bottom: 12px; }
+        .method-link { display: inline-flex; align-items: center; gap: 8px; background: #27ae60; color: white; padding: 8px 20px; border-radius: 40px; text-decoration: none; font-weight: 600; font-size: 0.85rem; transition: 0.2s; }
+        .method-link:hover { transform: scale(1.02); background: #219a52; }
+        
+        .note { background: #fff3cd; padding: 12px; border-radius: 16px; font-size: 0.7rem; color: #856404; text-align: center; margin-top: 20px; }
+        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 15px; margin-top: 30px; }
+        
+        @media (max-width: 600px) {
+            .card { padding: 25px; }
+            .input-group { flex-direction: column; }
+            .fetch-btn { padding: 14px; }
         }
     </style>
 </head>
 <body>
     <div class="header">
         <h1><i class="fab fa-youtube"></i> Brapiya YouTube Downloader</h1>
-        <p>Download Video • Save to Device • Share Anywhere</p>
-        <div class="badge"><i class="fas fa-download"></i> 📱 VIDEO DOWNLOAD ➡️ SAVE ➡️ SHARE</div>
+        <p>Download Any YouTube Video - HD, 4K, MP3</p>
+        <div class="badge">🔥 100% FREE • FAST DOWNLOAD • NO SIGNUP 🔥</div>
         <div class="nav-buttons">
-            <a href="index.html" class="nav-btn"><i class="fas fa-home"></i> Home</a>
-            <a href="yt-thumbnail.html" class="nav-btn"><i class="fas fa-image"></i> Thumbnail</a>
-            <a href="video-to-mp3.html" class="nav-btn"><i class="fas fa-music"></i> MP3</a>
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="yt-thumbnail.html" class="nav-btn">Thumbnail</a>
         </div>
     </div>
 
     <div class="container">
         <div class="card">
-            <div class="card-title"><i class="fab fa-youtube"></i> YouTube Video Downloader</div>
             <div class="input-group">
-                <input type="text" id="urlInput" placeholder="Paste YouTube URL...">
-                <button class="fetch-btn" onclick="fetchVideo()"><i class="fas fa-search"></i> Load Video</button>
+                <input type="text" id="urlInput" placeholder="Paste YouTube URL here...">
+                <button class="fetch-btn" onclick="getDownloadLinks()"><i class="fab fa-youtube"></i> Get Links</button>
             </div>
-
-            <div id="videoSection" style="display: none;">
-                <div class="card-title"><i class="fas fa-video"></i> Select Quality</div>
-                <div class="quality-grid" id="qualityGrid"></div>
-
-                <!-- File Size Display -->
-                <div class="size-card">
-                    <div style="font-size:0.7rem; opacity:0.8;">📊 ESTIMATED FILE SIZE</div>
-                    <div class="size-value" id="fileSizeValue">-- MB</div>
-                </div>
-
-                <div class="card-title"><i class="fas fa-cut"></i> Cut Video (Optional)</div>
-                <div class="time-inputs">
-                    <input type="text" id="startTime" placeholder="Start (00:00)" value="00:00">
-                    <input type="text" id="endTime" placeholder="End (00:00)" value="00:00">
-                </div>
-                <div>
-                    <button class="preset" onclick="setPreset(0,60)">📱 First 1 min</button>
-                    <button class="preset" onclick="setPreset(0,300)">📱 First 5 min</button>
-                    <button class="preset" onclick="setPreset(0,600)">📱 First 10 min</button>
-                    <button class="preset" onclick="resetToFull()">📱 Full Video</button>
-                </div>
-
-                <div class="progress-container" id="progressContainer">
-                    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
-                    <p style="font-size:0.7rem; text-align:center; margin-top:5px;" id="progressText">Processing...</p>
-                </div>
-
-                <button class="download-btn" id="downloadBtn" onclick="downloadVideo()" disabled>
-                    <i class="fas fa-download"></i> Download Video
-                </button>
-
-                <div class="info-text" id="infoText">
-                    <i class="fas fa-info-circle"></i> Paste YouTube URL to start
-                </div>
-
-                <!-- Share Guide - Clear Instructions -->
-                <div class="share-guide" id="shareGuide" style="display: none;">
-                    <h3><i class="fas fa-share-alt"></i> 📤 Video Share करने का तरीका</h3>
-                    <ul class="share-steps">
-                        <li><span class="step-icon">1</span> Video download होने के बाद "Downloads" folder में save होगा</li>
-                        <li><span class="step-icon">2</span> WhatsApp / Telegram / Instagram खोलें</li>
-                        <li><span class="step-icon">3</span> Chat में + या Attach icon पर click करें</li>
-                        <li><span class="step-icon">4</span> "Gallery" या "Files" select करें</li>
-                        <li><span class="step-icon">5</span> Downloaded video select करें और Send करें ✅</li>
-                    </ul>
-                    <p style="margin-top:12px; font-size:0.75rem; color:#c0392b; text-align:center;">
-                        <i class="fas fa-mobile-alt"></i> Video file आपके phone में save हो जाएगा - कभी भी, कहीं भी share कर सकते हैं!
-                    </p>
-                </div>
+            
+            <div id="resultBox" class="result-box"></div>
+            
+            <div class="note">
+                <i class="fas fa-info-circle"></i> <strong>How to use:</strong><br>
+                1. Copy YouTube video URL from browser<br>
+                2. Paste above and click "Get Links"<br>
+                3. Click any download method below<br>
+                4. Choose quality and download ✅
             </div>
-        </div>
-
-        <div class="note">
-            <i class="fas fa-download"></i> <strong>Download ➡️ Save ➡️ Share</strong><br>
-            Video download होने के बाद आपके डिवाइस में save हो जाएगा। फिर WhatsApp, Telegram, Instagram पर directly video file share कर सकते हैं!
         </div>
     </div>
-
-    <div class="toast" id="toast">✅ Ready!</div>
-
+    
     <footer>
-        <p>© 2026 Brapiya Tools | Download Video | Save to Device | Share Anywhere</p>
-        <p>🇮🇳 Jai Hind | Video download करो ➡️ Phone में save ➡️ कभी भी share करो 🇮🇳</p>
+        <p>© 2026 Brapiya Tools | Free YouTube Downloader</p>
+        <p>🇮🇳 Jai Hind 🇮🇳</p>
     </footer>
-
+    
     <script>
-        let currentVideoId = null;
-        let currentVideoTitle = "YouTube Video";
-        let currentVideoUrl = null;
-        let selectedQuality = 'medium';
-        let videoDuration = 180;
-
-        const qualities = [
-            { name: "1080p HD", code: "high", desc: "Best Quality", sizePerMin: 15 },
-            { name: "720p", code: "medium", desc: "Recommended", sizePerMin: 8, selected: true },
-            { name: "480p", code: "low", desc: "Small Size", sizePerMin: 4 }
-        ];
-
-        function extractVideoId(url) {
+        function getDownloadLinks() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                alert('Please enter YouTube URL!');
+                return;
+            }
+            
+            // Extract video ID
+            let videoId = null;
             const patterns = [
                 /(?:youtu\.be\/)([a-zA-Z0-9_-]{11})/,
                 /(?:youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/,
                 /(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/
             ];
             for (let p of patterns) {
-                let m = url.match(p);
-                if (m) return m[1];
+                const match = url.match(p);
+                if (match) {
+                    videoId = match[1];
+                    break;
+                }
             }
-            return null;
-        }
-
-        async function fetchVideo() {
-            const url = document.getElementById('urlInput').value.trim();
-            const videoId = extractVideoId(url);
-            if (!videoId) { alert('Invalid YouTube URL!'); return; }
             
-            currentVideoId = videoId;
-            currentVideoUrl = url;
+            if (!videoId) {
+                document.getElementById('resultBox').innerHTML = `
+                    <div class="method-card">
+                        <div class="method-title">❌ Invalid URL</div>
+                        <div class="method-desc">Please check the YouTube URL and try again.</div>
+                    </div>
+                `;
+                return;
+            }
             
-            try {
-                const oembedUrl = `https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${videoId}&format=json`;
-                const response = await fetch(oembedUrl);
-                const data = await response.json();
-                currentVideoTitle = data.title || 'YouTube Video';
-            } catch(e) { currentVideoTitle = 'YouTube Video'; }
+            const encodedUrl = encodeURIComponent(url);
             
-            document.getElementById('endTime').value = formatTime(180);
-            document.getElementById('videoSection').style.display = 'block';
-            renderQualityOptions();
-            document.getElementById('downloadBtn').disabled = false;
-            updateFileSize();
-            document.getElementById('infoText').innerHTML = `<i class="fas fa-check-circle"></i> ✅ Video loaded: ${currentVideoTitle}`;
-            showToast('✅ Video loaded! Download करें');
-        }
-
-        function renderQualityOptions() {
-            const grid = document.getElementById('qualityGrid');
-            grid.innerHTML = qualities.map((q, idx) => `
-                <div class="quality-card ${q.selected ? 'selected' : ''}" onclick="selectQuality('${q.code}')">
-                    <strong>${q.name}</strong><br><small>${q.desc}</small>
+            document.getElementById('resultBox').innerHTML = `
+                <div class="method-card">
+                    <div class="method-title">📥 Method 1: SaveFrom.net (Best & Fastest)</div>
+                    <div class="method-desc">Most reliable YouTube downloader. Supports HD, 4K, MP3.</div>
+                    <a href="https://en.savefrom.net/1-how-to-download-youtube-video/?url=${encodedUrl}" target="_blank" class="method-link">
+                        <i class="fas fa-download"></i> Download via SaveFrom.net
+                    </a>
                 </div>
-            `).join('');
+                
+                <div class="method-card">
+                    <div class="method-title">📥 Method 2: Y2Mate.com</div>
+                    <div class="method-desc">Popular downloader with multiple quality options.</div>
+                    <a href="https://y2mate.com/en64?url=${encodedUrl}" target="_blank" class="method-link">
+                        <i class="fas fa-download"></i> Download via Y2Mate
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">📥 Method 3: YT1s.com</div>
+                    <div class="method-desc">Fast and simple interface.</div>
+                    <a href="https://yt1s.com/en?url=${encodedUrl}" target="_blank" class="method-link">
+                        <i class="fas fa-download"></i> Download via YT1s
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">📥 Method 4: Loader.to</div>
+                    <div class="method-desc">Supports high quality video downloads.</div>
+                    <a href="https://loader.to/en?url=${encodedUrl}" target="_blank" class="method-link">
+                        <i class="fas fa-download"></i> Download via Loader.to
+                    </a>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-title">📥 Method 5: MP3 Only (Audio)</div>
+                    <div class="method-desc">Download only audio as MP3 file.</div>
+                    <a href="https://ytmp3.cc/en13/?url=${encodedUrl}" target="_blank" class="method-link">
+                        <i class="fas fa-music"></i> Download MP3 Only
+                    </a>
+                </div>
+            `;
         }
-
-        function selectQuality(code) {
-            selectedQuality = code;
-            document.querySelectorAll('.quality-card').forEach(c => c.classList.remove('selected'));
-            event.target.closest('.quality-card').classList.add('selected');
-            updateFileSize();
-            showToast(`✅ Quality: ${code}`);
-        }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-        }
-
-        function timeToSeconds(timeStr) {
-            const parts = timeStr.split(':');
-            if (parts.length === 2) return parseInt(parts[0]) * 60 + parseInt(parts[1]);
-            return parseInt(parts[0]);
-        }
-
-        function getDurationInSeconds() {
-            const startSec = timeToSeconds(document.getElementById('startTime').value);
-            const endSec = timeToSeconds(document.getElementById('endTime').value);
-            if (endSec > startSec && endSec > 0) return endSec - startSec;
-            return videoDuration;
-        }
-
-        function updateFileSize() {
-            const durationSec = getDurationInSeconds();
-            const durationMin = durationSec / 60;
-            let sizePerMin = 8;
-            if (selectedQuality === 'high') sizePerMin = 15;
-            else if (selectedQuality === 'medium') sizePerMin = 8;
-            else if (selectedQuality === 'low') sizePerMin = 4;
-            
-            let estimatedSizeMB = durationMin * sizePerMin;
-            let sizeDisplay = estimatedSizeMB.toFixed(1) + " MB";
-            if (estimatedSizeMB >= 1024) sizeDisplay = (estimatedSizeMB / 1024).toFixed(2) + " GB";
-            
-            document.getElementById('fileSizeValue').innerHTML = sizeDisplay;
-        }
-
-        function setPreset(startSec, endSec) {
-            document.getElementById('startTime').value = formatTime(startSec);
-            document.getElementById('endTime').value = formatTime(endSec);
-            updateFileSize();
-        }
-
-        function resetToFull() {
-            document.getElementById('startTime').value = '00:00';
-            document.getElementById('endTime').value = formatTime(videoDuration);
-            updateFileSize();
-        }
-
-        async function downloadVideo() {
-            const durationSec = getDurationInSeconds();
-            const fileSizeMB = (durationSec / 60) * (selectedQuality === 'high' ? 15 : selectedQuality === 'medium' ? 8 : 4);
-            const fileName = `youtube_${currentVideoId}_${selectedQuality}_${Date.now()}.mp4`;
-            
-            document.getElementById('progressContainer').style.display = 'block';
-            const progressFill = document.getElementById('progressFill');
-            const progressText = document.getElementById('progressText');
-            
-            const steps = [
-                { percent: 20, text: `📦 Size: ${fileSizeMB.toFixed(1)} MB` },
-                { percent: 50, text: '⚡ Downloading video...' },
-                { percent: 80, text: '💾 Saving to device...' },
-                { percent: 100, text: '✅ Complete!' }
-            ];
-            
-            for (let step of steps) {
-                await new Promise(r => setTimeout(r, 200));
-                progressFill.style.width = `${step.percent}%`;
-                progressText.innerText = step.text;
-            }
-            
-            setTimeout(() => {
-                document.getElementById('progressContainer').style.display = 'none';
-                saveVideoFile(fileName, fileSizeMB);
-            }, 300);
-        }
-
-        function saveVideoFile(fileName, fileSizeMB) {
-            // Create video file content
-            const videoContent = `Brapiya Tools - YouTube Video
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-📺 Title: ${currentVideoTitle}
-🎬 Quality: ${selectedQuality}
-📦 Size: ${fileSizeMB.toFixed(1)} MB
-⏱️ Duration: ${getDurationInSeconds()} seconds
-🔗 URL: ${currentVideoUrl}
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Downloaded using Brapiya Tools
-🇮🇳 Jai Hind!`;
-            
-            const blob = new Blob([videoContent], { type: 'video/mp4' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-            
-            // Show share guide
-            document.getElementById('shareGuide').style.display = 'block';
-            document.getElementById('infoText').innerHTML = `<i class="fas fa-check-circle"></i> ✅ Video downloaded! File name: ${fileName}<br>📁 File आपके "Downloads" folder में save हो गया है। अब आप share कर सकते हैं!`;
-            showToast(`✅ Video saved! "${fileName}" - अब Share कर सकते हैं`);
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.innerText = msg;
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 4000);
-        }
-
-        document.getElementById('startTime').addEventListener('change', updateFileSize);
-        document.getElementById('endTime').addEventListener('change', updateFileSize);
     </script>
 </body>
 </html>
