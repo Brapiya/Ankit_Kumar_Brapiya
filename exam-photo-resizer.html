@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Exam Photo Resizer - Brapiya Tools | Passport Size & Signature Resizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #0a2a3a, #1e4a6a); min-height: 100vh; }
+        
+        .header { background: rgba(0,0,0,0.3); backdrop-filter: blur(10px); color: white; padding: 20px; text-align: center; }
+        .header h1 { font-size: 1.8rem; }
+        .header h1 i { color: #ffb347; }
+        .badge { background: #ffb347; color: #0a2a3a; display: inline-block; padding: 3px 12px; border-radius: 20px; font-size: 0.7rem; margin-top: 8px; }
+        .nav-buttons { margin-top: 12px; }
+        .nav-btn { background: rgba(255,255,255,0.1); color: white; padding: 6px 15px; border-radius: 40px; text-decoration: none; margin: 0 5px; display: inline-block; font-size: 0.8rem; }
+        
+        .container { max-width: 1000px; margin: 0 auto; padding: 30px 20px; }
+        .card { background: white; border-radius: 32px; padding: 35px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        .two-columns { display: flex; gap: 30px; flex-wrap: wrap; }
+        .upload-area { flex: 1; min-width: 250px; border: 2px dashed #c0392b; border-radius: 24px; padding: 40px; text-align: center; cursor: pointer; transition: 0.3s; background: #fef5f0; }
+        .upload-area:hover { background: #fee8e0; border-color: #a93226; }
+        .upload-area i { font-size: 3rem; color: #c0392b; margin-bottom: 15px; }
+        .upload-area h3 { margin-bottom: 8px; font-size: 1rem; }
+        
+        .preview-area { flex: 1; text-align: center; background: #f8f9fa; border-radius: 24px; padding: 25px; display: none; }
+        .preview-area img { max-width: 100%; max-height: 250px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        
+        .settings { margin-top: 25px; display: none; }
+        .dimension-inputs { display: flex; gap: 15px; margin-bottom: 20px; flex-wrap: wrap; }
+        .dim-box { flex: 1; }
+        .dim-box label { display: block; font-size: 0.7rem; color: #666; margin-bottom: 5px; }
+        .dim-box input { width: 100%; padding: 12px; border: 2px solid #e9ecef; border-radius: 16px; font-size: 1rem; text-align: center; }
+        
+        .size-slider { margin: 20px 0; }
+        .size-slider label { display: flex; justify-content: space-between; font-size: 0.8rem; }
+        input[type="range"] { width: 100%; margin: 10px 0; }
+        
+        .preset-buttons { display: flex; gap: 10px; flex-wrap: wrap; margin: 15px 0; }
+        .preset { background: #ecf0f1; border: none; padding: 8px 15px; border-radius: 30px; cursor: pointer; font-size: 0.75rem; }
+        .preset.active { background: #c0392b; color: white; }
+        
+        .resize-btn { width: 100%; background: linear-gradient(135deg, #c0392b, #e74c3c); color: white; border: none; padding: 14px; border-radius: 50px; font-weight: 700; cursor: pointer; margin-top: 15px; }
+        
+        .result-box { margin-top: 20px; background: #d5f5e3; border-radius: 20px; padding: 20px; text-align: center; display: none; }
+        .file-info { font-size: 0.85rem; margin: 10px 0; }
+        .download-btn { background: #27ae60; color: white; border: none; padding: 12px 25px; border-radius: 50px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; }
+        
+        .note { background: #fff3cd; padding: 12px; border-radius: 16px; font-size: 0.7rem; color: #856404; text-align: center; margin-top: 20px; }
+        footer { background: rgba(0,0,0,0.3); color: white; text-align: center; padding: 15px; margin-top: 30px; }
+        .toast { position: fixed; bottom: 20px; right: 20px; background: #27ae60; color: white; padding: 10px 20px; border-radius: 50px; display: none; z-index: 1000; }
+        
+        @media (max-width: 700px) {
+            .card { padding: 25px; }
+            .two-columns { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-id-card"></i> Brapiya Exam Photo Resizer</h1>
+        <p>Passport Size & Signature Photo for SSC, UPSC, Bank, Railway, NDA, CDS Exams</p>
+        <div class="badge">🔥 10KB-300KB | 200x250 | 100x120 | 200x80 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="image-resizer.html" class="nav-btn">Image Resizer</a>
+            <a href="image-compressor.html" class="nav-btn">Compressor</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="card">
+            <div class="two-columns">
+                <div class="upload-area" id="uploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Click or Drag & Drop</h3>
+                    <p>JPG, PNG | Max 10MB</p>
+                    <input type="file" id="imageInput" accept="image/jpeg,image/png" style="display: none;">
+                </div>
+                <div class="preview-area" id="previewArea">
+                    <img id="previewImg" alt="Preview">
+                    <div class="file-info" id="fileInfo"></div>
+                </div>
+            </div>
+            
+            <div class="settings" id="settings">
+                <div class="dimension-inputs">
+                    <div class="dim-box">
+                        <label><i class="fas fa-arrow-left"></i> Width (px)</label>
+                        <input type="number" id="targetWidth" value="200" placeholder="Width">
+                    </div>
+                    <div class="dim-box">
+                        <label><i class="fas fa-arrow-up"></i> Height (px)</label>
+                        <input type="number" id="targetHeight" value="250" placeholder="Height">
+                    </div>
+                </div>
+                
+                <div class="size-slider">
+                    <label><i class="fas fa-compress-alt"></i> File Size (KB) <span id="sizeValue">100 KB</span></label>
+                    <input type="range" id="qualitySlider" min="10" max="100" value="70">
+                </div>
+                
+                <div class="preset-buttons">
+                    <strong style="font-size:0.75rem;">📸 Photo Presets:</strong>
+                    <button class="preset active" onclick="setPreset(200,250)">Passport Size (200x250)</button>
+                    <button class="preset" onclick="setPreset(100,120)">Small Photo (100x120)</button>
+                    <button class="preset" onclick="setPreset(150,200)">Medium (150x200)</button>
+                    <button class="preset" onclick="setPreset(200,80)">Signature (200x80)</button>
+                    <button class="preset" onclick="setPreset(350,350)">Square (350x350)</button>
+                </div>
+                
+                <button class="resize-btn" id="resizeBtn" onclick="resizeImage()">
+                    <i class="fas fa-magic"></i> Resize for Exam Form
+                </button>
+            </div>
+            
+            <div class="result-box" id="resultBox">
+                <i class="fas fa-check-circle" style="font-size: 2rem; color: #27ae60;"></i>
+                <h3>Photo Ready for Exam Form!</h3>
+                <div class="file-info" id="resultInfo"></div>
+                <button class="download-btn" id="downloadBtn" onclick="downloadImage()">
+                    <i class="fas fa-download"></i> Download Photo
+                </button>
+            </div>
+            
+            <div class="note">
+                <i class="fas fa-info-circle"></i> <strong>Exam Requirements:</strong><br>
+                • SSC, UPSC, Bank, Railway, NDA, CDS: Usually 100-300KB, 200x250 or 100x120<br>
+                • Signature: Usually 200x80, 20-100KB<br>
+                • Use slider to adjust file size
+            </div>
+        </div>
+    </div>
+    
+    <div class="toast" id="toast">✅ Ready!</div>
+    
+    <footer>
+        <p>© 2026 Brapiya Tools | Exam Photo Resizer | Passport Size & Signature for SSC, UPSC, Bank, Railway</p>
+        <p>🇮🇳 Jai Hind | Get perfect size for exam forms 🇮🇳</p>
+    </footer>
+    
+    <script>
+        let originalFile = null;
+        let originalImg = null;
+        let resizedBlob = null;
+        
+        const uploadArea = document.getElementById('uploadArea');
+        const imageInput = document.getElementById('imageInput');
+        
+        uploadArea.addEventListener('click', () => imageInput.click());
+        uploadArea.addEventListener('dragover', (e) => { e.preventDefault(); uploadArea.style.background = '#fee8e0'; });
+        uploadArea.addEventListener('dragleave', () => { uploadArea.style.background = '#fef5f0'; });
+        uploadArea.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadArea.style.background = '#fef5f0';
+            const file = e.dataTransfer.files[0];
+            if (file && (file.type === 'image/jpeg' || file.type === 'image/png')) loadImage(file);
+            else alert('Please drop a JPG or PNG file!');
+        });
+        
+        imageInput.addEventListener('change', (e) => {
+            if (e.target.files[0]) loadImage(e.target.files[0]);
+        });
+        
+        function loadImage(file) {
+            if (file.size > 10 * 1024 * 1024) {
+                alert('File too large! Max 10MB');
+                return;
+            }
+            originalFile = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                originalImg = new Image();
+                originalImg.onload = () => {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('fileInfo').innerHTML = `📁 Original: ${(file.size / 1024).toFixed(1)} KB | ${originalImg.width}x${originalImg.height}`;
+                    document.getElementById('previewArea').style.display = 'block';
+                    document.getElementById('settings').style.display = 'block';
+                    document.getElementById('resultBox').style.display = 'none';
+                    document.getElementById('targetWidth').value = originalImg.width;
+                    document.getElementById('targetHeight').value = originalImg.height;
+                };
+                originalImg.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+        
+        function setPreset(w, h) {
+            document.getElementById('targetWidth').value = w;
+            document.getElementById('targetHeight').value = h;
+            document.querySelectorAll('.preset').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            showToast(`✅ Preset: ${w} x ${h}`);
+        }
+        
+        function resizeImage() {
+            if (!originalImg) {
+                alert('Please upload an image first!');
+                return;
+            }
+            
+            let targetWidth = parseInt(document.getElementById('targetWidth').value);
+            let targetHeight = parseInt(document.getElementById('targetHeight').value);
+            const quality = parseInt(document.getElementById('qualitySlider').value) / 100;
+            
+            if (isNaN(targetWidth)) targetWidth = originalImg.width;
+            if (isNaN(targetHeight)) targetHeight = originalImg.height;
+            
+            const canvas = document.createElement('canvas');
+            canvas.width = targetWidth;
+            canvas.height = targetHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(originalImg, 0, 0, targetWidth, targetHeight);
+            
+            canvas.toBlob((blob) => {
+                resizedBlob = blob;
+                const fileSizeKB = (blob.size / 1024).toFixed(1);
+                const isSizeOK = fileSizeKB >= 10 && fileSizeKB <= 300;
+                
+                document.getElementById('resultInfo').innerHTML = `
+                    ✅ ${targetWidth} x ${targetHeight} | ${fileSizeKB} KB
+                    ${isSizeOK ? '<span style="color:#27ae60;"> ✓ Perfect for exam form!</span>' : '<span style="color:#e74c3c;"> ⚠️ Adjust quality slider to reach 10-300KB</span>'}
+                `;
+                document.getElementById('resultBox').style.display = 'block';
+                showToast(`✅ Resized to ${targetWidth}x${targetHeight}, ${fileSizeKB} KB`);
+            }, 'image/jpeg', quality);
+        }
+        
+        function downloadImage() {
+            if (!resizedBlob) {
+                alert('Please resize image first!');
+                return;
+            }
+            const url = URL.createObjectURL(resizedBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `exam_photo_${Date.now()}.jpg`;
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✅ Image downloaded!');
+        }
+        
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 2000);
+        }
+        
+        document.getElementById('qualitySlider').addEventListener('input', (e) => {
+            document.getElementById('sizeValue').innerText = e.target.value + ' KB';
+        });
+    </script>
+</body>
+</html>
