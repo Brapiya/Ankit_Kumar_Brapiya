@@ -34,31 +34,44 @@ body {
     height: 70px;
 }
 
-/* Logo */
-.logo {
+/* 🟢 UPDATED: Logo Container with Profile Image Wrapper */
+.logo-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
-.logo i {
-    font-size: 2rem;
-    color: #ffb347;
+/* 🔴 NEW: Circle Logo Magic Properties */
+.circle-logo {
+    width: 44px;                 /* Perfect size inside navbar */
+    height: 44px;                /* Equal width & height for absolute circle */
+    border-radius: 50%;          /* Makes image completely round */
+    object-fit: cover;           /* Keeps your face aspect ratio perfect */
+    object-position: 50% 15%;    /* Automatically tracks face from your selfie */
+    border: 2px solid #ffb347;   /* Matching golden theme border */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
 }
 
-.logo h1 {
+.circle-logo:hover {
+    transform: scale(1.06);      /* Hover bounce response */
+}
+
+.logo-container h1 {
     font-size: 1.3rem;
     font-weight: 700;
     color: white;
+    line-height: 1.1;
 }
 
-.logo span {
-    color: #ffb347;
-}
-
-.logo p {
+.logo-container p {
     font-size: 0.65rem;
     color: rgba(255,255,255,0.7);
+    margin-top: 2px;
+}
+
+.text-primary {
+    color: #ffb347;
 }
 
 /* Navigation Menu */
@@ -532,4 +545,39 @@ body.dark .dropdown-menu a:hover { background: #535368; }
     .stat-number { font-size: 1.3rem; }
     .category-tabs { gap: 8px; }
     .cat-tab { padding: 5px 12px; font-size: 0.75rem; }
+}
+/* ========== OPTIONAL AUTH BUTTON STYLES ========== */
+.nav-auth-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 18px;
+    color: #0a2a3a !important; /* Dark blue text color theme se match karta hua */
+    background: #ffb347; /* Golden background jo alag se chamke */
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    border-radius: 40px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.nav-auth-btn:hover {
+    background: #ff9f1a; /* Hover karne par thoda dark gold */
+    transform: translateY(-1px); /* Halka sa upar uthega bounciness ke liye */
+    box-shadow: 0 4px 12px rgba(255, 179, 71, 0.4); /* Glowing golden shadow */
+}
+
+.nav-auth-btn i {
+    font-size: 1rem;
+}
+
+/* Mobile responsive screen par settings (Taaki menu khulne par button sahi dikhe) */
+@media (max-width: 1024px) {
+    .nav-auth-btn {
+        width: auto;
+        margin-top: 15px;
+        margin-left: 16px;
+        display: inline-flex;
+    }
 }
