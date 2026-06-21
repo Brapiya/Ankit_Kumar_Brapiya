@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Access - Brapiya Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background: #061320;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Ambient Glowing Background Blobs */
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ffb347, #ff4757);
+            filter: blur(150px);
+            opacity: 0.2;
+            z-index: 0;
+            animation: floatBG 10s infinite alternate;
+        }
+
+        body::after {
+            background: linear-gradient(45deg, #1abc9c, #c0392b);
+            bottom: -100px;
+            right: -100px;
+            animation-delay: -5s;
+        }
+
+        @keyframes floatBG {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(50px, 50px) scale(1.2); }
+        }
+
+        /* Main Master Glass Container */
+        .master-container {
+            width: 1000px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            display: flex;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        /* Slider Overlay Panel (The Shock Element) */
+        .overlay-panel {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(135deg, #0a2a3a 0%, #1e4a6a 100%);
+            border-radius: 29px;
+            z-index: 100;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .master-container.active .overlay-panel {
+            left: 0;
+            background: linear-gradient(135deg, #1e4a6a 0%, #0a2a3a 100%);
+        }
+
+        /* Forms Layout Box */
+        .form-box {
+            width: 50%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            transition: all 0.6s ease-in-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 50px;
+        }
+
+        .form-box.login-side {
+            left: 0;
+            z-index: 2;
+        }
+
+        .form-box.signup-side {
+            left: 0;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .master-container.active .login-side {
+            left: 50%;
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .master-container.active .signup-side {
+            left: 50%;
+            opacity: 1;
+            z-index: 5;
+            animation: showForm 0.6s forwards;
+        }
+
+        @keyframes showForm {
+            0%, 50% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        /* Typography Styles */
+        h2 {
+            color: white;
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        h2 span {
+            color: #ffb347;
+        }
+
+        p.subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+        }
+
+        /* Futuristic Input Groups */
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255, 255, 255, 0.4);
+            transition: 0.3s;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 15px 15px 50px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            outline: none;
+            border-radius: 14px;
+            color: white;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #ffb347;
+            box-shadow: 0 0 15px rgba(255, 179, 71, 0.2);
+        }
+
+        .input-group input:focus + i {
+            color: #ffb347;
+        }
+
+        /* Cyber Buttons */
+        .action-btn {
+            background: #ffb347;
+            color: #061320;
+            border: none;
+            padding: 15px;
+            border-radius: 14px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            box-shadow: 0 5px 15px rgba(255, 179, 71, 0.3);
+        }
+
+        .action-btn:hover {
+            background: #ff9f1a;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 179, 71, 0.4);
+        }
+
+        .ghost-btn {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 12px 35px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .ghost-btn:hover {
+            background: white;
+            color: #0a2a3a;
+            transform: scale(1.05);
+        }
+
+        /* Extra details */
+        .options-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+        }
+
+        .remember-me {
+            color: rgba(255,255,255,0.6);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+        }
+
+        .forgot-pass {
+            color: #ffb347;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .social-login {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .social-icon {
+            width: 45px;
+            height: 45px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .social-icon:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: white;
+            color: #ffb347;
+            transform: translateY(-3px);
+        }
+
+        /* Overlay texts toggling view states */
+        .overlay-text {
+            transition: all 0.6s ease-in-out;
+        }
+        .overlay-panel .signup-msg { display: block; }
+        .overlay-panel .login-msg { display: none; }
+
+        .master-container.active .overlay-panel .signup-msg { display: none; }
+        .master-container.active .overlay-panel .login-msg { display: block; }
+
+        /* Mobile Responsive */
+        @media (max-width: 1024px) {
+            .master-container { width: 90%; height: auto; flex-direction: column; }
+            .overlay-panel { position: relative; width: 100%; left: 0 !important; height: 250px; border-radius: 29px 29px 0 0; }
+            .form-box { position: relative; width: 100%; height: auto; padding: 40px 20px; opacity: 1 !important; left: 0 !important; }
+            .form-box.signup-side { display: none; }
+            .master-container.active .form-box.login-side { display: none; }
+            .master-container.active .form-box.signup-side { display: block; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="master-container" id="masterContainer">
+        
+        <div class="overlay-panel">
+            <div class="overlay-text signup-msg">
+                <h2 style="font-size: 2.5rem; margin-bottom: 15px;"><i class="fas fa-rocket"></i> New Here?</h2>
+                <p style="color: rgba(255,255,255,0.8); max-width: 300px; font-size: 0.95rem; line-height: 1.5;">Join Brapiya Tools squad to explore 30+ automated web engineering scripts natively.</p>
+                <button class="ghost-btn" id="toSignUp">Create Account</button>
+            </div>
+            <div class="overlay-text login-msg">
+                <h2 style="font-size: 2.5rem; margin-bottom: 15px;"><i class="fas fa-lock"></i> Welcome Back!</h2>
+                <p style="color: rgba(255,255,255,0.8); max-width: 300px; font-size: 0.95rem; line-height: 1.5;">To stay connected with cloud processing pipelines, log back in instantly.</p>
+                <button class="ghost-btn" id="toLogin">Sign In</button>
+            </div>
+        </div>
+
+        <div class="form-box login-side">
+            <h2>Welcome <span>Back</span></h2>
+            <p class="subtitle">Log in to unlock batch tools limits instantly.</p>
+            
+            <form onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Password" required>
+                    <i class="fas fa-key"></i>
+                </div>
+                
+                <div class="options-row">
+                    <label class="remember-me"><input type="checkbox"> Remember me</label>
+                    <a href="#" class="forgot-pass">Forgot Password?</a>
+                </div>
+                
+                <button class="action-btn">Log In ⚡</button>
+            </form>
+
+            <div style="text-align:center; color:rgba(255,255,255,0.4); margin-top:25px; font-size:0.8rem;">OR CONNECT WITH</div>
+            <div class="social-login">
+                <div class="social-icon"><i class="fab fa-google"></i></div>
+                <div class="social-icon"><i class="fab fa-github"></i></div>
+                <div class="social-icon"><i class="fab fa-facebook-f"></i></div>
+            </div>
+        </div>
+
+        <div class="form-box signup-side">
+            <h2>Create <span>Account</span></h2>
+            <p class="subtitle">Get full workspace access for no watermark outputs.</p>
+            
+            <form onsubmit="event.preventDefault();">
+                <div class="input-group">
+                    <input type="text" placeholder="Full Name" required>
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="input-group">
+                    <input type="email" placeholder="Email Address" required>
+                    <i class="fas fa-envelope"></i>
+                </div>
+                <div class="input-group">
+                    <input type="password" placeholder="Create Strong Password" required>
+                    <i class="fas fa-lock"></i>
+                </div>
+                
+                <button class="action-btn" style="background: #ff4757; color: white; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3);">Register Now 🚀</button>
+            </form>
+
+            <div style="text-align:center; color:rgba(255,255,255,0.4); margin-top:25px; font-size:0.8rem;">OR REGISTER WITH</div>
+            <div class="social-login">
+                <div class="social-icon"><i class="fab fa-google"></i></div>
+                <div class="social-icon"><i class="fab fa-github"></i></div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const container = document.getElementById('masterContainer');
+        const toSignUpBtn = document.getElementById('toSignUp');
+        const toLoginBtn = document.getElementById('toLogin');
+
+        toSignUpBtn.addEventListener('click', () => {
+            container.classList.add('active');
+        });
+
+        toLoginBtn.addEventListener('click', () => {
+            container.classList.remove('active');
+        });
+    </script>
+</body>
+</html>
