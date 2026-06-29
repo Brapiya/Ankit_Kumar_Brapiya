@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional EMI Calculator - Brapiya Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Is Calculator ka khas CSS (Aap ise style.css me bhi jod sakte hain) */
+        .calculator-container {
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark .calculator-container {
+            background: #1e1e1e;
+            border-color: rgba(255,255,255,0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            background: var(--bg-secondary, #fff);
+            color: inherit;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .calc-btn:hover {
+            transform: translateY(-2px);
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            border-left: 5px solid #2a5298;
+            display: none; /* Pehle se chhupa rahega, click par dikhega */
+        }
+        body.dark .result-box {
+            background: #2d2d2d;
+        }
+        .result-box h3 {
+            margin: 0 0 10px 0;
+            font-size: 1.1rem;
+            color: #666;
+        }
+        body.dark .result-box h3 { color: #aaa; }
+        .emi-amount {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #27ae60;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-id-card"></i> Brapiya Exam Photo Resizer</h1>
+        <p>Passport Size & Signature Photo for SSC, UPSC, Bank, Railway, NDA, CDS Exams</p>
+        <div class="badge">🔥 10KB-300KB | 200x250 | 100x120 | 200x80 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            
+           
+            <a href="discount-calculator.html" class="nav-btn">Discount Calculator</a>
+            
+            <a href="exam-photo-resizer.html" class="nav-btn">Exam Photo Resizer</a>
+            
+            <a href="image-to-pdf.html" class="nav-btn">Image to PDF</a> 
+     </div>
+
+    </div>
+
+    <div class="calculator-container">
+        <h2 style="text-align: center; margin-bottom: 25px;"><i class="fas fa-calculator" style="color: #2a5298;"></i> EMI Calculator</h2>
+        
+        <div class="input-group">
+            <label for="loanAmount">Loan Amount (₹)</label>
+            <input type="number" id="loanAmount" placeholder="Example: 500000" min="1">
+        </div>
+
+        <div class="input-group">
+            <label for="interestRate">Interest Rate (% Per Year)</label>
+            <input type="number" id="interestRate" placeholder="Example: 8.5" step="0.1" min="1">
+        </div>
+
+        <div class="input-group">
+            <label for="loanTenure">Tenure (In Months)</label>
+            <input type="number" id="loanTenure" placeholder="Example: 24" min="1">
+        </div>
+
+        <button class="calc-btn" onclick="calculateEMI()">Calculate Monthly EMI</button>
+
+        <div class="result-box" id="resultBox">
+            <h3>Your Monthly EMI</h3>
+            <div class="emi-amount" id="emiValue">₹0.00</div>
+            <p style="font-size: 0.85rem; margin-top: 10px; color: #777;" id="totalInterestValue">Total Interest: ₹0</p>
+        </div>
+    </div>
+
+    <script>
+        function calculateEMI() {
+            // Inputs se value nikalna
+            const P = parseFloat(document.getElementById('loanAmount').value);
+            const annualRate = parseFloat(document.getElementById('interestRate').value);
+            const N = parseInt(document.getElementById('loanTenure').value);
+
+            // Validation (Check karna ki user ne sab sahi bhara hai ya nahi)
+            if (isNaN(P) || isNaN(annualRate) || isNaN(N) || P <= 0 || annualRate <= 0 || N <= 0) {
+                alert("Please enter valid positive numbers in all fields.");
+                return;
+            }
+
+            // Monthly interest rate nikalna (r = annual rate / 12 / 100)
+            const r = annualRate / 12 / 100;
+
+            // EMI Formula: EMI = P * r * (1 + r)^N / ((1 + r)^N - 1)
+            const x = Math.pow(1 + r, N);
+            const monthlyEMI = (P * r * x) / (x - 1);
+            
+            // Total Amount aur Interest nikalna
+            const totalPayment = monthlyEMI * N;
+            const totalInterest = totalPayment - P;
+
+            // Result ko screen par set karna
+            document.getElementById('emiValue').innerText = "₹" + monthlyEMI.toFixed(2);
+            document.getElementById('totalInterestValue').innerText = "Total Interest Payable: ₹" + totalInterest.toFixed(0);
+
+            // Result box ko display karna
+            document.getElementById('resultBox').style.display = "block";
+        }
+    </script>
+</body>
+</html>

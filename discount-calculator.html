@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Discount Calculator - Brapiya Tools</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .calculator-container {
+            max-width: 450px;
+            margin: 50px auto;
+            padding: 30px;
+            background: #ffffff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        body.dark .calculator-container {
+            background: #1e1e1e;
+            border-color: rgba(255,255,255,0.1);
+        }
+        .input-group {
+            margin-bottom: 20px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            background: var(--bg-secondary, #fff);
+            color: inherit;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .calc-btn:hover {
+            transform: translateY(-2px);
+        }
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #27ae60;
+            display: none; /* Pehle hidden rahega */
+        }
+        body.dark .result-box {
+            background: #2d2d2d;
+        }
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        .result-item:last-child {
+            margin-bottom: 0;
+            padding-top: 10px;
+            border-top: 1px dashed #ccc;
+            font-weight: 700;
+        }
+        .saved-amount {
+            color: #e74c3c;
+            font-weight: 600;
+        }
+        .final-price {
+            color: #27ae60;
+            font-size: 1.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-id-card"></i> Brapiya Exam Photo Resizer</h1>
+        <p>Passport Size & Signature Photo for SSC, UPSC, Bank, Railway, NDA, CDS Exams</p>
+        <div class="badge">🔥 10KB-300KB | 200x250 | 100x120 | 200x80 🔥</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="nav-btn">Home</a>
+            <a href="image-resizer.html" class="nav-btn">Image Resizer</a>
+            <a href="image-compressor.html" class="nav-btn">Compressor</a>
+            <a href="pdf-compressor.html" class="nav-btn">PDF Compressor</a>
+            <a href="emi-calculator.html" class="nav-btn">EMI Calculator</a>
+           
+        </div>
+    </div>
+
+    <div class="calculator-container">
+        <h2 style="text-align: center; margin-bottom: 25px;">
+            <i class="fas fa-tags" style="color: #2a5298;"></i> Discount Calculator
+        </h2>
+        
+        <div class="input-group">
+            <label for="originalPrice">Original Price (₹)</label>
+            <input type="number" id="originalPrice" placeholder="Enter original price" min="0">
+        </div>
+
+        <div class="input-group">
+            <label for="discountPercentage">Discount (% Off)</label>
+            <input type="number" id="discountPercentage" placeholder="Enter discount percentage" min="0" max="100">
+        </div>
+
+        <button class="calc-btn" onclick="calculateDiscount()">Calculate Price</button>
+
+        <div class="result-box" id="resultBox">
+            <div class="result-item">
+                <span>You Save:</span>
+                <span class="saved-amount" id="savedValue">₹0.00</span>
+            </div>
+            <div class="result-item">
+                <span>Final Price:</span>
+                <span class="final-price" id="finalValue">₹0.00</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function calculateDiscount() {
+            // Inputs se value fetch karna
+            const originalPrice = parseFloat(document.getElementById('originalPrice').value);
+            const discountPercent = parseFloat(document.getElementById('discountPercentage').value);
+
+            // Validation (Check karna ki inputs sahi hain ya nahi)
+            if (isNaN(originalPrice) || isNaN(discountPercent) || originalPrice < 0 || discountPercent < 0 || discountPercent > 100) {
+                alert("Please enter valid prices and a discount percentage between 0 and 100.");
+                return;
+            }
+
+            // Calculation Logic
+            // Formula: Discount Amount = (Original Price * Discount Percentage) / 100
+            const savedAmount = (originalPrice * discountPercent) / 100;
+            
+            // Formula: Final Price = Original Price - Discount Amount
+            const finalPrice = originalPrice - savedAmount;
+
+            // Values ko screen par display karna
+            document.getElementById('savedValue').innerText = "₹" + savedAmount.toFixed(2);
+            document.getElementById('finalValue').innerText = "₹" + finalPrice.toFixed(2);
+
+            // Result box ko show karna
+            document.getElementById('resultBox').style.display = "block";
+        }
+    </script>
+</body>
+</html>
